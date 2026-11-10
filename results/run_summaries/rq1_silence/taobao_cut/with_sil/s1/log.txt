@@ -1,0 +1,21 @@
+15:21:47 INFO run <project>\runs\rq1_silence\taobao_cut\with_sil\s1 | tags {'experiment': 'rq1_silence', 'variant': 'with_sil', 'dataset': 'taobao_cut', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+15:21:50 INFO data <project>\data/taobao_cut | condition=no_text budget=event | K=17 | scored events {'train': 36486, 'val': 5931, 'test': 13848}
+15:21:50 INFO time code: kind=hier branching=[8, 8, 8] a_max=0.6457 beta=6.15 resolution=8.6e-09 | new tokens=45
+15:21:50 INFO train windows=2585 tokens/window mean=98 max=178
+15:21:53 INFO training: 443 optimizer steps in stages [('grammar', 200), ('next_event', 162), ('silence', 81)], 81 train batches per epoch, trainable params 18.60M
+15:21:54 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+15:22:31 INFO step 50/443 [grammar] loss 8.4487 lr 1.97e-04 38s
+15:22:56 INFO step 100/443 [grammar] loss 8.2220 lr 1.82e-04 63s
+15:23:28 INFO step 150/443 [grammar] loss 8.1900 lr 1.59e-04 94s
+15:24:10 INFO step 200/443 [grammar] loss 7.9471 lr 1.28e-04 136s
+15:24:10 INFO stage next_event: 162 steps, losses ['time', 'type'], train all
+15:24:29 INFO step 250/443 [next_event] loss 7.3846 lr 9.56e-05 155s
+15:24:55 INFO step 300/443 [next_event] loss 7.2402 lr 6.48e-05 181s
+15:25:19 INFO step 350/443 [next_event] loss 7.1962 lr 4.00e-05 206s
+15:25:31 INFO   val nll -3.1897 (time -4.8061 type 1.4816 sil 0.1348) select -3.1897 *
+15:25:32 INFO stage silence: 81 steps, losses ['sil', 'time', 'type'], train all
+15:25:46 INFO step 400/443 [silence] loss 7.3438 lr 2.44e-05 232s
+15:26:17 INFO   val nll -3.2091 (time -4.8044 type 1.4762 sil 0.1191) select -3.2091 *
+15:26:17 INFO loaded best checkpoint (val -3.2091) after 263s
+15:26:25 INFO calibration temperatures {'time': [1.10285222530365, 2.9376673698425293, 1.1943644285202026], 'mark': 1.0262774229049683, 'val_nll_before': -3.2091150283813477, 'val_nll_after': -3.219294548034668}
+15:26:45 INFO test (calibrated): n_events=13848 n_gaps=997 nll_time=-4.7609 nll_type=1.3751 nll_sil=0.1194 nll=-3.2664 type_acc=0.6174 type_macro_f1=0.4616 pit_ks=0.0338 pit_ece=0.0068 time_tokens_per_event=2.9799 n_pred=3000 rmse_mean=0.1110 mae_median=0.0343 mae_log=0.0295 pred_cap=0.9984

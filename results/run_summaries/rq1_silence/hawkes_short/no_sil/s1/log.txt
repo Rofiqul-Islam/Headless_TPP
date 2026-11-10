@@ -1,0 +1,27 @@
+15:16:12 INFO run <project>\runs\rq1_silence\hawkes_short\no_sil\s1 | tags {'experiment': 'rq1_silence', 'variant': 'no_sil', 'dataset': 'hawkes_short', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': False}
+15:16:15 INFO data <project>\data/hawkes_short | condition=no_text budget=event | K=3 | scored events {'train': 34103, 'val': 4685, 'test': 8679}
+15:16:15 INFO time code: kind=hier branching=[8, 8, 8] a_max=3.542 beta=1.704 resolution=1e-06 | new tokens=31
+15:16:15 INFO train windows=6000 tokens/window mean=56 max=193
+15:16:19 INFO training: 764 optimizer steps in stages [('grammar', 200), ('next_event', 564)], 188 train batches per epoch, trainable params 18.56M
+15:16:19 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+15:16:51 INFO step 50/764 [grammar] loss 7.5587 lr 1.99e-04 32s
+15:17:15 INFO step 100/764 [grammar] loss 7.4234 lr 1.95e-04 56s
+15:17:44 INFO step 150/764 [grammar] loss 7.3963 lr 1.87e-04 85s
+15:18:07 INFO step 200/764 [grammar] loss 7.3515 lr 1.76e-04 108s
+15:18:07 INFO stage next_event: 564 steps, losses ['time', 'type'], train all
+15:18:20 INFO step 250/764 [next_event] loss 7.3202 lr 1.61e-04 121s
+15:18:40 INFO step 300/764 [next_event] loss 7.2187 lr 1.45e-04 141s
+15:18:52 INFO step 350/764 [next_event] loss 7.1645 lr 1.26e-04 153s
+15:19:05 INFO step 400/764 [next_event] loss 7.1791 lr 1.07e-04 166s
+15:19:18 INFO step 450/764 [next_event] loss 7.1896 lr 8.85e-05 179s
+15:19:38 INFO step 500/764 [next_event] loss 7.2091 lr 7.06e-05 199s
+15:19:46 INFO   val nll 1.7549 (time 0.4678 type 1.0022 sil 0.2849) select 1.4700 *
+15:19:59 INFO step 550/764 [next_event] loss 7.1761 lr 5.45e-05 220s
+15:20:12 INFO step 600/764 [next_event] loss 7.1401 lr 4.08e-05 233s
+15:20:25 INFO step 650/764 [next_event] loss 7.1448 lr 3.03e-05 246s
+15:20:44 INFO step 700/764 [next_event] loss 7.1305 lr 2.33e-05 265s
+15:20:57 INFO step 750/764 [next_event] loss 7.1238 lr 2.02e-05 278s
+15:21:09 INFO   val nll 1.7652 (time 0.4582 type 0.9973 sil 0.3097) select 1.4555 *
+15:21:09 INFO loaded best checkpoint (val 1.7652) after 290s
+15:21:18 INFO calibration temperatures {'time': [2.861724376678467, 3.004927635192871, 9.089914321899414], 'mark': 0.9999868273735046, 'val_nll_before': 1.7651586532592773, 'val_nll_after': 1.7148194313049316}
+15:21:37 INFO test (calibrated): n_events=8679 n_gaps=1500 nll_time=0.4794 nll_type=1.0000 nll_sil=0.2420 nll=1.7214 type_acc=0.4948 type_macro_f1=0.3495 pit_ks=0.0432 pit_ece=0.0087 time_tokens_per_event=2.9788 nll_true=1.6949 gap_to_true=0.0265 n_pred=3000 rmse_mean=0.7097 mae_median=0.4589 mae_log=0.2636 pred_cap=5.3969

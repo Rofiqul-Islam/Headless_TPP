@@ -1,0 +1,23 @@
+15:26:57 INFO run <project>\runs\rq1_silence\taobao_cut\no_sil\s1 | tags {'experiment': 'rq1_silence', 'variant': 'no_sil', 'dataset': 'taobao_cut', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': False}
+15:27:01 INFO data <project>\data/taobao_cut | condition=no_text budget=event | K=17 | scored events {'train': 36486, 'val': 5931, 'test': 13848}
+15:27:01 INFO time code: kind=hier branching=[8, 8, 8] a_max=0.6457 beta=6.15 resolution=8.6e-09 | new tokens=45
+15:27:01 INFO train windows=2585 tokens/window mean=98 max=178
+`torch_dtype` is deprecated! Use `dtype` instead!
+15:27:06 INFO training: 443 optimizer steps in stages [('grammar', 200), ('next_event', 243)], 81 train batches per epoch, trainable params 18.60M
+15:27:06 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+<project>\htpp\train.py:133: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:839.)
+  run["loss"] += float(loss)
+15:27:44 INFO step 50/443 [grammar] loss 8.4487 lr 1.97e-04 38s
+15:28:09 INFO step 100/443 [grammar] loss 8.2220 lr 1.82e-04 63s
+15:28:41 INFO step 150/443 [grammar] loss 8.1900 lr 1.59e-04 95s
+15:29:12 INFO step 200/443 [grammar] loss 7.9471 lr 1.28e-04 126s
+15:29:12 INFO stage next_event: 243 steps, losses ['time', 'type'], train all
+15:29:31 INFO step 250/443 [next_event] loss 7.3846 lr 9.56e-05 145s
+15:29:57 INFO step 300/443 [next_event] loss 7.2402 lr 6.48e-05 171s
+15:30:21 INFO step 350/443 [next_event] loss 7.1962 lr 4.00e-05 195s
+15:30:40 INFO step 400/443 [next_event] loss 7.1040 lr 2.44e-05 214s
+15:31:11 INFO   val nll -3.1923 (time -4.8112 type 1.4760 sil 0.1429) select -3.3352 *
+15:31:11 INFO loaded best checkpoint (val -3.1923) after 245s
+15:31:20 INFO calibration temperatures {'time': [1.5219767093658447, 3.3818016052246094, 1.1945433616638184], 'mark': 1.023375391960144, 'val_nll_before': -3.1923108100891113, 'val_nll_after': -3.211124897003174}
+15:31:40 INFO test (calibrated): n_events=13848 n_gaps=997 nll_time=-4.7639 nll_type=1.3752 nll_sil=0.1302 nll=-3.2585 type_acc=0.6179 type_macro_f1=0.4604 pit_ks=0.0149 pit_ece=0.0047 time_tokens_per_event=2.9799 n_pred=3000 rmse_mean=0.1096 mae_median=0.0344 mae_log=0.0296 pred_cap=0.9984

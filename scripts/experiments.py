@@ -104,8 +104,8 @@ def run_pool(jobs, gpus, per_gpu, dry, log_dir):
             if i not in running and todo:
                 j = todo.pop(0)
                 Path(j["out"]).mkdir(parents=True, exist_ok=True)
-                env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(g))
-                f = open(Path(j["out"]) / "stdout.txt", "w")
+                env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(g), PYTHONUTF8="1", PYTHONIOENCODING="utf-8")
+                f = open(Path(j["out"]) / "stdout.txt", "w", encoding="utf-8")
                 running[i] = (subprocess.Popen(j["cmd"], env=env, stdout=f, stderr=subprocess.STDOUT, cwd=ROOT), j, f, time.time())
                 print(f"[gpu {g}] start {j['out']}", flush=True)
         for i in list(running):

@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\caption{Does text help? Each row compares two inputs on Amazon reviews. A number is how much lower the first input's NLL is than the second's (nats per event), so a positive number means the first input predicts better. The total splits exactly into time, type, and silence parts (Eq.~\ref{eq:dnll}). One seed; $\pm$: 95\% bootstrap interval over users.}
+\label{tab:rq3cond}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}llcccccccc@{}}
+\toprule
+ & & \multicolumn{4}{c}{Same number of events per input} & \multicolumn{4}{c}{Same number of tokens per input}\\
+\cmidrule(lr){3-6}\cmidrule(lr){7-10}
+Comparison & Question & \textbf{Total} & Time & Type & Silence & \textbf{Total} & Time & Type & Silence\\
+\midrule
+FULL vs.\ NO-TEXT & Do reviews help at all? & $-$0.014{\tiny$\pm$0.013} & +0.087 & $-$0.016 & $-$0.085 & +0.007{\tiny$\pm$0.012} & $-$0.036 & +0.005 & +0.038\\
+NAMES vs.\ SCRAMBLED & Does a type name's meaning help? & 0.000{\tiny$\pm$0.005} & $-$0.009 & +0.007 & +0.001 & $-$0.016{\tiny$\pm$0.005} & +0.023 & $-$0.011 & $-$0.027\\
+FULL vs.\ SHUFFLED & Does the event's own review help? & +0.004{\tiny$\pm$0.012} & +0.071 & $-$0.010 & $-$0.058 & $-$0.005{\tiny$\pm$0.014} & $-$0.046 & $-$0.015 & +0.056\\
+TEXT-ONLY vs.\ FULL & Can text replace the type ID? & $-$0.088{\tiny$\pm$0.013} & +0.010 & $-$0.077 & $-$0.022 & $-$0.098{\tiny$\pm$0.012} & +0.013 & $-$0.101 & $-$0.010\\
+\midrule
+SCRAMBLED vs.\ NO-TEXT & Control: format only (should be 0) & $-$0.036{\tiny$\pm$0.007} & $-$0.010 & $-$0.020 & $-$0.006 & +0.030{\tiny$\pm$0.007} & $-$0.002 & +0.015 & +0.016\\
+\bottomrule
+\end{tabular}
+\end{table*}

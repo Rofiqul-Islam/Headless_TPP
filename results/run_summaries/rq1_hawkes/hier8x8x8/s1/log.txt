@@ -1,0 +1,20 @@
+01:04:02 INFO run <project>\runs\rq1_hawkes\hier8x8x8\s1 | tags {'experiment': 'rq1_hawkes', 'variant': 'hier8x8x8', 'dataset': 'hawkes', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+01:04:05 INFO data <project>\data/hawkes | condition=no_text budget=event | K=3 | scored events {'train': 126014, 'val': 18620, 'test': 30910}
+01:04:05 INFO time code: kind=hier branching=[8, 8, 8] a_max=7.333 beta=0.4133 resolution=1e-06 | new tokens=31
+01:04:05 INFO train windows=2013 tokens/window mean=342 max=663
+01:04:09 INFO training: 392 optimizer steps in stages [('grammar', 200), ('next_event', 128), ('silence', 64)], 64 train batches per epoch, trainable params 18.56M
+01:04:09 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+01:05:03 INFO step 50/392 [grammar] loss 7.4250 lr 1.95e-04 54s
+01:05:52 INFO step 100/392 [grammar] loss 7.3746 lr 1.77e-04 103s
+01:06:51 INFO step 150/392 [grammar] loss 7.3517 lr 1.47e-04 162s
+01:07:39 INFO step 200/392 [grammar] loss 7.3483 lr 1.11e-04 210s
+01:07:39 INFO stage next_event: 128 steps, losses ['time', 'type'], train all
+01:08:48 INFO step 250/392 [next_event] loss 7.3079 lr 7.50e-05 279s
+01:09:51 INFO step 300/392 [next_event] loss 7.2819 lr 4.47e-05 342s
+01:10:39 INFO   val nll 1.8190 (time 0.7075 type 1.0866 sil 0.0249) select 1.8190 *
+01:10:39 INFO stage silence: 64 steps, losses ['sil', 'time', 'type'], train all
+01:11:08 INFO step 350/392 [silence] loss 7.2875 lr 2.53e-05 419s
+01:12:17 INFO   val nll 1.8137 (time 0.7043 type 1.0850 sil 0.0244) select 1.8137 *
+01:12:17 INFO loaded best checkpoint (val 1.8137) after 488s
+01:12:28 INFO calibration temperatures {'time': [0.9965041875839233, 3.617974042892456, 19.540283203125], 'mark': 1.112871527671814, 'val_nll_before': 1.8136868476867676, 'val_nll_after': 1.810370922088623}
+01:13:56 INFO test (calibrated): n_events=30910 n_gaps=500 nll_time=0.7175 nll_type=1.0872 nll_sil=0.0246 nll=1.8293 type_acc=0.3861 type_macro_f1=0.3199 pit_ks=0.0088 pit_ece=0.0027 time_tokens_per_event=2.9774 nll_true=1.8175 gap_to_true=0.0118 n_pred=3000 rmse_mean=1.4089 mae_median=0.7212 mae_log=0.3306 pred_cap=28.2410

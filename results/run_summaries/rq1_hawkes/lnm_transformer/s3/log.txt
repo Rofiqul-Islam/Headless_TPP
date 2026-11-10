@@ -1,0 +1,10 @@
+06:56:28 INFO run <project>\runs\rq1_hawkes\lnm_transformer\s3 | tags {'experiment': 'rq1_hawkes', 'variant': 'lnm_transformer', 'dataset': 'hawkes', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 3, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+06:56:30 INFO baseline epoch 0 val nll 1.8588 best 1.8588
+06:56:32 INFO baseline epoch 5 val nll 1.8321 best 1.8321
+06:56:33 INFO baseline epoch 10 val nll 1.8229 best 1.8229
+06:56:35 INFO baseline epoch 15 val nll 1.8221 best 1.8206
+06:56:36 INFO baseline epoch 20 val nll 1.8195 best 1.8185
+06:56:38 INFO baseline epoch 25 val nll 1.8177 best 1.8177
+06:56:40 INFO baseline epoch 30 val nll 1.8189 best 1.8177
+06:56:41 INFO baseline epoch 35 val nll 1.8212 best 1.8177
+06:56:49 INFO test {'n_events': 30910, 'n_gaps': 500, 'nll_time': 0.7202435288507165, 'nll_type': 1.092337260316468, 'nll_sil': 0.02404392503180268, 'nll': 1.8366247141989873, 'type_acc': 0.3746683921061145, 'type_macro_f1': 0.3594688531793238, 'pit_ks': 0.008532526033358967, 'pit_ece': 0.002652863151083791, 'rmse_mean': 1.4388584975379957, 'mae_median': 0.7257486142215076, 'mae_log': 0.33174120493129416, 'nll_true': 1.8175060523006867, 'gap_to_true': 0.019118661898300582, 'pred_cap': 28.24098544299099, 'params': 102107, 'train_seconds': 18.226553678512573}

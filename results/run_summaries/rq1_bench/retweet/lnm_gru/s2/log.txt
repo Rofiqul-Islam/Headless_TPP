@@ -1,0 +1,10 @@
+04:29:07 INFO run <project>\runs\rq1_bench\retweet\lnm_gru\s2 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_gru', 'dataset': 'retweet', 'model': 'baseline-gru', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+04:29:12 INFO baseline epoch 0 val nll 5.8431 best 5.8431
+04:29:23 INFO baseline epoch 5 val nll 5.7208 best 5.7208
+04:29:35 INFO baseline epoch 10 val nll 5.7091 best 5.7091
+04:29:46 INFO baseline epoch 15 val nll 5.7030 best 5.7030
+04:29:57 INFO baseline epoch 20 val nll 5.6944 best 5.6944
+04:30:08 INFO baseline epoch 25 val nll 5.6911 best 5.6911
+04:30:19 INFO baseline epoch 30 val nll 5.8529 best 5.6888
+04:30:30 INFO baseline epoch 35 val nll 5.6977 best 5.6888
+04:31:18 INFO test {'n_events': 216465, 'n_gaps': 0, 'nll_time': 4.86791704304101, 'nll_type': 0.7695713816038402, 'nll_sil': 0.0, 'nll': 5.63748842464485, 'type_acc': 0.6107453860901301, 'type_macro_f1': 0.4276741337708874, 'pit_ks': 0.01622045634401026, 'pit_ece': 0.0033335643175571097, 'rmse_mean': 14521.853530164793, 'mae_median': 2252.627736179233, 'mae_log': 1.0289330279791953, 'pred_cap': 582928.0, 'params': 52059, 'train_seconds': 125.19134712219238}

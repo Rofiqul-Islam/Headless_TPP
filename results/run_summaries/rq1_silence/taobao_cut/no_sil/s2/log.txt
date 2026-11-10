@@ -1,0 +1,19 @@
+06:16:32 INFO run <project>\runs\rq1_silence\taobao_cut\no_sil\s2 | tags {'experiment': 'rq1_silence', 'variant': 'no_sil', 'dataset': 'taobao_cut', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': False}
+06:16:35 INFO data <project>\data/taobao_cut | condition=no_text budget=event | K=17 | scored events {'train': 36486, 'val': 5931, 'test': 13848}
+06:16:35 INFO time code: kind=hier branching=[8, 8, 8] a_max=0.6457 beta=6.15 resolution=8.6e-09 | new tokens=45
+06:16:35 INFO train windows=2585 tokens/window mean=98 max=178
+06:16:39 INFO training: 443 optimizer steps in stages [('grammar', 200), ('next_event', 243)], 81 train batches per epoch, trainable params 18.60M
+06:16:39 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+06:17:16 INFO step 50/443 [grammar] loss 8.6269 lr 1.97e-04 37s
+06:17:40 INFO step 100/443 [grammar] loss 8.2025 lr 1.82e-04 61s
+06:18:13 INFO step 150/443 [grammar] loss 8.1796 lr 1.59e-04 94s
+06:18:43 INFO step 200/443 [grammar] loss 7.9720 lr 1.28e-04 124s
+06:18:43 INFO stage next_event: 243 steps, losses ['time', 'type'], train all
+06:19:02 INFO step 250/443 [next_event] loss 7.4442 lr 9.56e-05 143s
+06:19:27 INFO step 300/443 [next_event] loss 7.2829 lr 6.48e-05 168s
+06:19:52 INFO step 350/443 [next_event] loss 7.1873 lr 4.00e-05 193s
+06:20:11 INFO step 400/443 [next_event] loss 7.1732 lr 2.44e-05 212s
+06:20:40 INFO   val nll -3.1920 (time -4.8048 type 1.4773 sil 0.1354) select -3.3274 *
+06:20:41 INFO loaded best checkpoint (val -3.1920) after 242s
+06:20:49 INFO calibration temperatures {'time': [1.3635069131851196, 2.6688621044158936, 1.14875066280365], 'mark': 1.0305893421173096, 'val_nll_before': -3.1919822692871094, 'val_nll_after': -3.2045059204101562}
+06:21:09 INFO test (calibrated): n_events=13848 n_gaps=997 nll_time=-4.7499 nll_type=1.3747 nll_sil=0.1277 nll=-3.2475 type_acc=0.6151 type_macro_f1=0.4571 pit_ks=0.0226 pit_ece=0.0061 time_tokens_per_event=2.9799 n_pred=3000 rmse_mean=0.1097 mae_median=0.0343 mae_log=0.0295 pred_cap=0.9984

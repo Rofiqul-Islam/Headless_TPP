@@ -1,0 +1,250 @@
+{
+  "tags": {
+    "experiment": "rq1_bench",
+    "variant": "digits",
+    "dataset": "taobao",
+    "model": "Qwen2.5-1.5B",
+    "method": "headless",
+    "condition": "no_text",
+    "budget": "event",
+    "seed": 2,
+    "gen": false,
+    "lambda_d": 0.0,
+    "train_frac": 1.0,
+    "mark_init": "mean",
+    "timecode": "digits",
+    "silence": true
+  },
+  "metrics": {
+    "n_events": 27955,
+    "n_gaps": 0,
+    "nll_time": -4.097031827900891,
+    "nll_type": 1.3176245017070307,
+    "nll_sil": 0.0,
+    "nll": -2.7794073261938603,
+    "type_acc": 0.6217850116258272,
+    "type_macro_f1": 0.45740924269413474,
+    "pit_ks": 0.011634982077764033,
+    "pit_ece": 0.002868896440708278,
+    "time_tokens_per_event": 5.0,
+    "n_pred": 3000,
+    "rmse_mean": 0.13071950422737807,
+    "mae_median": 0.04497108501989425,
+    "mae_log": 0.03798265447046454,
+    "pred_cap": 1.0000000000000002
+  },
+  "metrics_raw": {
+    "n_events": 27955,
+    "n_gaps": 0,
+    "nll_time": -4.095956821330383,
+    "nll_type": 1.3171764503021417,
+    "nll_sil": 0.0,
+    "nll": -2.7787803710282417,
+    "type_acc": 0.6217850116258272,
+    "type_macro_f1": 0.45740924269413474,
+    "pit_ks": 0.0072897783700343055,
+    "pit_ece": 0.0021570380969415117,
+    "time_tokens_per_event": 5.0,
+    "n_pred": 3000,
+    "rmse_mean": 0.13076953220391907,
+    "mae_median": 0.04497271504875643,
+    "mae_log": 0.03798433004888258
+  },
+  "metrics_unseen": null,
+  "temps": {
+    "time": [
+      1.014095425605774,
+      1.0050171613693237,
+      0.9567121267318726,
+      0.9986382722854614,
+      0.9543889164924622
+    ],
+    "mark": 1.026532769203186,
+    "val_nll_before": -2.6426029205322266,
+    "val_nll_after": -2.644285202026367
+  },
+  "timecode": {
+    "kind": "digits",
+    "branching": [
+      10,
+      10,
+      10,
+      10,
+      10
+    ]
+  },
+  "train": {
+    "best_val": {
+      "nll_time": -4.057659335979086,
+      "nll_type": 1.4150558915689873,
+      "nll_sil": 0.0,
+      "n_events": 11272,
+      "nll": -2.6426034444100983,
+      "select": -2.6426034444100983,
+      "step": 323,
+      "stage": "silence"
+    },
+    "steps": 323,
+    "train_seconds": 518.8827579021454
+  },
+  "history": [
+    {
+      "nll_time": -4.041147030355915,
+      "nll_type": 1.4228810837625865,
+      "nll_sil": 0.0,
+      "n_events": 11272,
+      "nll": -2.6182659465933282,
+      "select": -2.6182659465933282,
+      "step": 282,
+      "stage": "next_event"
+    },
+    {
+      "nll_time": -4.057659335979086,
+      "nll_type": 1.4150558915689873,
+      "nll_sil": 0.0,
+      "n_events": 11272,
+      "nll": -2.6426034444100983,
+      "select": -2.6426034444100983,
+      "step": 323,
+      "stage": "silence"
+    }
+  ],
+  "env": {
+    "python": "3.11.18",
+    "cwd": "<project>",
+    "torch": "2.12.1+cu130",
+    "cuda": true,
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "transformers": "4.57.6",
+    "peft": "0.17.1"
+  },
+  "config": {
+    "experiment": "rq1_bench",
+    "variant": "digits",
+    "method": "headless",
+    "out_dir": "<project>\\runs/rq1_bench/taobao/digits/s2",
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B",
+      "pretrained": true,
+      "dtype": "bfloat16",
+      "attn_implementation": "sdpa",
+      "gradient_checkpointing": true,
+      "mark_init": "mean",
+      "lora": {
+        "r": 16,
+        "alpha": 32,
+        "dropout": 0.05,
+        "targets": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ]
+      }
+    },
+    "timecode": {
+      "kind": "digits",
+      "branching": [
+        8,
+        8,
+        8
+      ],
+      "p_tail": 0.01,
+      "split": "quantile",
+      "time_resolution": null,
+      "digits": {
+        "n_int": 3,
+        "n_dec": 2,
+        "scale": null
+      }
+    },
+    "data": {
+      "dir": "<project>\\data/taobao",
+      "condition": "no_text",
+      "budget": "event",
+      "max_events": 128,
+      "max_tokens": 2048,
+      "ctx_frac": 0.5,
+      "desc_max_tokens": 48,
+      "silence": true,
+      "prompt": "The following is a sequence of events. Each event gives its waiting time, its type and optional text.\n",
+      "max_train_seqs": null,
+      "max_val_seqs": null,
+      "max_test_seqs": null
+    },
+    "train": {
+      "seed": 2,
+      "lr": 0.0002,
+      "lr_new": 0.001,
+      "weight_decay": 0.0,
+      "warmup_frac": 0.03,
+      "min_lr_ratio": 0.1,
+      "clip": 1.0,
+      "max_tokens_per_batch": 16384,
+      "eval_tokens_per_batch": 32768,
+      "max_batch_size": 32,
+      "grad_accum": 1,
+      "workers": 2,
+      "log_every": 50,
+      "eval_every": 500,
+      "eval_max_batches": null,
+      "patience": 6,
+      "synthetic_sequences": 2000,
+      "lambda_d": 0.0,
+      "gen": false,
+      "stages": [
+        {
+          "name": "grammar",
+          "steps": 200,
+          "losses": [
+            "time",
+            "type"
+          ],
+          "train": "new_tokens",
+          "synthetic_frac": 0.5
+        },
+        {
+          "name": "next_event",
+          "epochs": 2,
+          "losses": [
+            "time",
+            "type",
+            "desc"
+          ]
+        },
+        {
+          "name": "silence",
+          "epochs": 1,
+          "losses": [
+            "time",
+            "type",
+            "desc",
+            "sil"
+          ]
+        }
+      ]
+    },
+    "eval": {
+      "calibrate": true,
+      "calibrate_marks": true,
+      "predict_depth": 3,
+      "predict_max_events": 3000,
+      "gen_max_events": 300,
+      "top_p": 0.9
+    },
+    "baseline": {
+      "encoder": "gru",
+      "d": 64,
+      "layers": 2,
+      "heads": 4,
+      "n_comp": 8,
+      "lr": 0.001,
+      "batch_size": 64,
+      "epochs": 100,
+      "patience": 10
+    }
+  }
+}

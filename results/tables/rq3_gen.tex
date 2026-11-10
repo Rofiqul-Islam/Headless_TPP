@@ -1,0 +1,14 @@
+\begin{table}[t]
+\caption{Writing the next description (FULL+GEN) with description-loss weight $\lambda_{\text{d}}$ ($0$ is FULL). Time, type and total NLL (nats per event), description perplexity, ROUGE-L of sampled reviews (\%), and share of generated 8-grams found in the training reviews (\%). One seed.}
+\label{tab:rq3gen}
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}ccccccc@{}}
+\toprule
+$\lambda_{\text{d}}$ & Time & Type & NLL & PPL & ROUGE-L & 8-gram\\
+\midrule
+0 & 4.276 & 2.123 & 6.742 & -- & -- & --\\
+0.1 & 4.265 & 2.080 & 6.676 & 14.9 & 11.5 & 0.4\\
+1 & 4.318 & 2.087 & 6.691 & 15.0 & 12.3 & 0.2\\
+\bottomrule
+\end{tabular}
+\end{table}

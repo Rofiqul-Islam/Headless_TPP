@@ -1,0 +1,23 @@
+14:02:57 INFO run <project>\runs\rq1_bench\stackoverflow\scratch\s1 | tags {'experiment': 'rq1_bench', 'variant': 'scratch', 'dataset': 'stackoverflow', 'model': 'Qwen2.5-0.5B-scratch', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+14:03:00 INFO data <project>\data/stackoverflow | condition=no_text budget=event | K=22 | scored events {'train': 89096, 'val': 25361, 'test': 26117}
+14:03:00 INFO time code: kind=hier branching=[8, 8, 8] a_max=5.107 beta=0.6332 resolution=5.38e-07 | new tokens=50
+14:03:00 INFO train windows=1401 tokens/window mean=343 max=526
+`torch_dtype` is deprecated! Use `dtype` instead!
+14:03:13 INFO training: 332 optimizer steps in stages [('grammar', 200), ('next_event', 88), ('silence', 44)], 44 train batches per epoch, trainable params 494.12M
+14:03:13 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+<project>\htpp\train.py:133: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:839.)
+  run["loss"] += float(loss)
+14:03:34 INFO step 50/332 [grammar] loss 8.2155 lr 2.89e-04 21s
+14:03:51 INFO step 100/332 [grammar] loss 8.0417 lr 2.50e-04 38s
+14:04:08 INFO step 150/332 [grammar] loss 7.9609 lr 1.92e-04 55s
+14:04:23 INFO step 200/332 [grammar] loss 7.9848 lr 1.27e-04 70s
+14:04:23 INFO stage next_event: 88 steps, losses ['time', 'type'], train all
+14:04:46 INFO step 250/332 [next_event] loss 7.9203 lr 7.07e-05 93s
+14:05:12 INFO   val nll 2.2702 (time 0.6925 type 1.5777 sil 0.0000) select 2.2702 *
+14:05:13 INFO stage silence: 44 steps, losses ['sil', 'time', 'type'], train all
+14:05:17 INFO step 300/332 [silence] loss 7.7164 lr 3.65e-05 124s
+14:05:39 INFO   val nll 2.2530 (time 0.6830 type 1.5700 sil 0.0000) select 2.2530 *
+14:05:41 INFO loaded best checkpoint (val 2.2530) after 148s
+14:05:49 INFO calibration temperatures {'time': [0.9151110053062439, 0.9915681481361389, 1.1985327005386353], 'mark': 0.9915971755981445, 'val_nll_before': 2.252983570098877, 'val_nll_after': 2.2520370483398438}
+14:06:02 INFO test (calibrated): n_events=26117 n_gaps=0 nll_time=0.6523 nll_type=1.6197 nll_sil=0.0000 nll=2.2720 type_acc=0.4589 type_macro_f1=0.1096 pit_ks=0.0386 pit_ece=0.0076 time_tokens_per_event=2.9807 n_pred=3000 rmse_mean=0.9662 mae_median=0.6182 mae_log=0.3187 pred_cap=20.3379

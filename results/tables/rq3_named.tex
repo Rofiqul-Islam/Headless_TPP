@@ -1,0 +1,15 @@
+\begin{table}[t]
+\caption{Type names on the output side (NAMED-OUT): the type tokens start from the LLM's embedding of the type name. NLL, its type part (nats per event), and type macro-F1. One seed.}
+\label{tab:rq3named}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+Input & NLL & Type NLL & Macro-F1\\
+\midrule
+NO-TEXT & 6.728 & 2.107 & 0.079\\
+NO-TEXT, NAMED-OUT & 6.721 & 2.106 & 0.076\\
+FULL & 6.742 & 2.123 & 0.084\\
+FULL, NAMED-OUT & 6.740 & 2.120 & 0.085\\
+\bottomrule
+\end{tabular}
+\end{table}

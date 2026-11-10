@@ -1,0 +1,12 @@
+14:28:07 INFO run <project>\runs\rq1_bench\taobao\lnm_transformer\s1 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_transformer', 'dataset': 'taobao', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+14:28:09 INFO baseline epoch 0 val nll -0.8543 best -0.8543
+14:28:10 INFO baseline epoch 5 val nll -1.1714 best -1.1714
+14:28:11 INFO baseline epoch 10 val nll -1.2096 best -1.2096
+14:28:12 INFO baseline epoch 15 val nll -1.2245 best -1.2245
+14:28:13 INFO baseline epoch 20 val nll -1.2342 best -1.2342
+14:28:14 INFO baseline epoch 25 val nll -1.2434 best -1.2434
+14:28:15 INFO baseline epoch 30 val nll -1.2427 best -1.2434
+14:28:16 INFO baseline epoch 35 val nll -1.2433 best -1.2443
+14:28:17 INFO baseline epoch 40 val nll -1.2413 best -1.2455
+14:28:18 INFO baseline epoch 45 val nll -1.2397 best -1.2455
+14:28:26 INFO test {'n_events': 27955, 'n_gaps': 0, 'nll_time': -2.739321153071374, 'nll_type': 1.3775047564281722, 'nll_sil': 0.0, 'nll': -1.361816396643202, 'type_acc': 0.6099087819710248, 'type_macro_f1': 0.44723777676612597, 'pit_ks': 0.014447804783862206, 'pit_ece': 0.002697191915578609, 'rmse_mean': 0.12473819353826174, 'mae_median': 0.041989572226564194, 'mae_log': 0.035643861262311824, 'pred_cap': 1.0000000000000002, 'params': 103913, 'train_seconds': 15.992802143096924}

@@ -27,11 +27,11 @@ from htpp.utils import load_json, read_jsonl  # noqa: E402
 
 COND_NAMES = {"no_text": "NO-TEXT", "names": "NAMES", "scrambled": "SCRAMBLED", "full": "FULL",
               "shuffled": "SHUFFLED", "text_only": "TEXT-ONLY"}
-COMPARISONS = [("full", "no_text", "FULL vs.\\ NO-TEXT", "total value of text"),
-               ("names", "scrambled", "NAMES vs.\\ SCRAMBLED", "meaning of the type name"),
-               ("full", "shuffled", "FULL vs.\\ SHUFFLED", "event-specific detail"),
-               ("text_only", "full", "TEXT-ONLY vs.\\ FULL", "text replacing the label"),
-               ("scrambled", "no_text", "SCRAMBLED vs.\\ NO-TEXT", "format only (expect 0)")]
+COMPARISONS = [("full", "no_text", "FULL vs.\\ NO-TEXT", "Do reviews help at all?"),
+               ("names", "scrambled", "NAMES vs.\\ SCRAMBLED", "Does a type name's meaning help?"),
+               ("full", "shuffled", "FULL vs.\\ SHUFFLED", "Does the event's own review help?"),
+               ("text_only", "full", "TEXT-ONLY vs.\\ FULL", "Can text replace the type ID?"),
+               ("scrambled", "no_text", "SCRAMBLED vs.\\ NO-TEXT", "Control: format only (should be 0)")]
 
 
 DATA_ROOT: Path | None = None   # set with --data; used when a run was made on another computer
@@ -59,6 +59,8 @@ def load_runs(root: Path) -> list[dict]:
     for p in sorted(root.rglob("summary.json")):
         s = load_json(p)
         s["dir"] = str(p.parent)
+        if (p.parent / "rescore.json").exists():   # interval scores from scripts/rescore.py
+            s["rescore"] = load_json(p.parent / "rescore.json")
         runs.append(s)
     return runs
 
@@ -97,7 +99,8 @@ def seeds_note(counts, se=True):
     if not counts:
         return ""
     n = f"{counts[0]}" if len(counts) == 1 else f"{counts[0]}--{counts[-1]}"
-    return f"Means over {n} seeds" + ("" if counts[-1] < 2 or not se else "; $\\pm$: standard error") + "."
+    return (f"Means over {n} seed" + ("" if n == "1" else "s") + ("" if counts[-1] < 2 or not se else "; $\\pm$: standard error")
+            + ".")
 
 
 DS_NAMES = {"retweet": "Retweet", "stackoverflow": "StackOverflow", "taobao": "Taobao", "amazon": "Amazon",
@@ -116,6 +119,17 @@ def pick(runs, **tags):
 
 def metric(rs, key, raw=False):
     return ms([(r["metrics_raw"] if raw else r["metrics"]).get(key) for r in rs])
+
+
+def interval_metric(rs, key="nll"):
+    """NLL of the recorded interval at the data set's step delta (rescore.json)."""
+    xs = []
+    for r in rs:
+        rc = r.get("rescore")
+        if not rc:
+            return np.nan, np.nan, 0
+        xs.append(rc["interval"][repr(float(rc["delta_info"]["delta"]))][key])
+    return ms(xs)
 
 
 def write(out: Path, name: str, tex: str, results: dict, key: str, data):
@@ -158,11 +172,22 @@ def table_bench(runs, out, R):
             ("digits", False, "\\quad digit strings instead of time tokens"),
             ("scratch", False, "\\quad no language pre-training (0.5B)"),
             ("lnm_gru", False, "GRU + log-normal mixture"), ("lnm_transformer", False, "Transformer + log-normal mixture")]
+    bench = pick(runs, experiment="rq1_bench")
+    interval = bool(bench) and all(r.get("rescore") for r in bench)   # every run rescored: use the interval NLL
+    if interval:
+        rows = [r for r in rows if not r[1]]   # rescoring uses the calibrated model only
+        steps = {}
+        for r in bench:
+            steps.setdefault(r["tags"]["dataset"], float(r["rescore"]["delta_info"]["delta"]))
+        n_ev = min(int(r["rescore"]["n_events"]) for r in bench)
     vals, data, counts = {}, defaultdict(dict), []
     for var, raw, label in rows:
         for ds in dsets:
             rs = pick(runs, experiment="rq1_bench", dataset=ds, variant=var)
             v = {k: metric(rs, m, raw) for k, m in (("nll", "nll"), ("rmse", "rmse_mean"), ("acc", "type_acc"))}
+            if interval:
+                v["nll_density"] = v["nll"]
+                v["nll"] = interval_metric(rs)
             counts.append(v["nll"][2])
             vals[(var, raw, ds)] = v
             data[f"{var}{'_raw' if raw else ''}"][ds] = v
@@ -185,12 +210,17 @@ def table_bench(runs, out, R):
                     c = f"\\textbf{{{c}}}"
                 cells.append(c)
         lines.append(label + " & " + " & ".join(cells) + "\\\\")
-    head = " & ".join(f"\\multicolumn{{3}}{{c}}{{{DS_NAMES.get(ds, ds)}}}" for ds in dsets)
+    head = " & ".join(f"\\multicolumn{{3}}{{c}}{{{DS_NAMES.get(ds, ds)}"
+                      + (f" ($\\delta={steps[ds]:.3g}$)" if interval else "") + "}" for ds in dsets)
     sub = " & ".join(["NLL & RMSE & Acc."] * len(dsets))
     cm = " ".join(f"\\cmidrule(lr){{{2 + 3 * i}-{4 + 3 * i}}}" for i in range(len(dsets)))
-    tex = ("\\begin{table*}[t]\n\\caption{E1b: benchmarks. Held-out NLL (nats per event, lower is better), RMSE of the "
-           "predicted mean waiting time (capped at the longest training wait for every model; in each data set's time unit), and type "
-           "accuracy. All models score the same events in the same time unit. Best value per column in bold. "
+    nll_text = (f"NLL of the recorded interval $[\\tau,\\tau+\\delta)$ of each waiting time, with $\\delta$ the recording step "
+                f"(nats per event; the same {n_ev:,} test events for every model)" if interval
+                else "Held-out NLL of the density at the recorded waiting times (nats per event; with rounded "
+                     "timestamps it can favour sharp peaks, see text)")
+    tex = ("\\begin{table*}[t]\n\\caption{E1b: benchmarks. " + nll_text + ", RMSE of the predicted mean waiting time "
+           "(capped at the longest training wait), and type accuracy, on the same events for every model. "
+           "Best value per column in bold. "
            f"{seeds_note(counts, se=False)}}}\n\\label{{tab:rq1bench}}\n\\footnotesize\\setlength{{\\tabcolsep}}{{3pt}}\n"
            f"\\begin{{tabular}}{{@{{}}l{'ccc' * len(dsets)}@{{}}}}\n\\toprule\n & {head}\\\\\n{cm}\n & {sub}\\\\\n\\midrule\n"
            + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}\n")
@@ -275,6 +305,17 @@ def boot(u: pd.DataFrame, col, n_boot=1000, seed=0):
     return float(est), float((hi - lo) / 2)
 
 
+def rq3_note(rs, boot_note=True):
+    """'One seed' or 'Means over n seeds', plus what the bootstrap interval covers."""
+    seeds = sorted({r["tags"].get("seed") for r in rs})
+    s = "One seed" if len(seeds) <= 1 else f"Means over {len(seeds)} seeds"
+    if boot_note:
+        s += "; $\\pm$: half-width of a 95\\% interval from a paired bootstrap over users"
+        if len(seeds) <= 1:
+            s += ", which does not include training randomness"
+    return s + "."
+
+
 def table_conditions(runs, out, R):
     rs3 = pick(runs, experiment="rq3")
     if not rs3:
@@ -300,19 +341,22 @@ def table_conditions(runs, out, R):
             data["comparisons"][f"{a_}-{b_}/{budget}"] = parts
             cells += [fmt(parts["nll"][0], parts["nll"][1], sign=True), fmt(parts["nll_time"][0], sign=True),
                       fmt(parts["nll_type"][0], sign=True), fmt(parts["nll_sil"][0], sign=True)]
+        if a_ == "scrambled" and b_ == "no_text":   # the control goes below a rule
+            lines2.append("\\midrule")
         lines2.append(f"{label} & {meaning} & " + " & ".join(cells) + "\\\\")
-    tex1 = ("\\begin{table}[t]\n\\caption{E3 on Amazon reviews: held-out NLL of each input (nats per event; "
-            "time, type and silence parts together) under the event budget and the token budget. Means over seeds.}\n"
+    tex1 = ("\\begin{table}[t]\n\\caption{Amazon reviews: held-out NLL of each input (nats per event; "
+            f"time, type and silence parts together) under the event budget and the token budget. {rq3_note(rs3, False)}}}\n"
             "\\label{tab:rq3inputs}\n\\footnotesize\\setlength{\\tabcolsep}{4pt}\n\\begin{tabular}{@{}lcc@{}}\n\\toprule\n"
             "Input & Event budget & Token budget\\\\\n\\midrule\n" + "\n".join(lines1) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}\n")
     write(out, "rq3_inputs", tex1, R, "rq3_inputs", data["nll"])
-    tex = ("\\begin{table*}[t]\n\\caption{E3 on Amazon reviews: gain of the first input over the second (reduction in NLL, "
-           "nats per event; positive means the first input helps), split exactly into time, type, and silence parts "
-           "(Eq.~\\ref{eq:dnll}), under the event budget and the token budget. Gains are averaged over seeds; $\\pm$ gives the "
-           "half-width of a 95\\% interval from a paired bootstrap over users.}\n\\label{tab:rq3cond}\n"
+    note = "One seed" if len({r["tags"].get("seed") for r in rs3}) <= 1 else "Means over seeds"
+    tex = ("\\begin{table*}[t]\n\\caption{Does text help? Each row compares two inputs on Amazon reviews; a positive "
+           f"number means the first input has the lower NLL (nats per event). {note}.}}\n\\label{{tab:rq3cond}}\n"
            "\\footnotesize\\setlength{\\tabcolsep}{3pt}\n"
-           "\\begin{tabular}{@{}llcccccccc@{}}\n\\toprule\n & & \\multicolumn{4}{c}{Event budget} & \\multicolumn{4}{c}{Token budget}\\\\\n"
-           "\\cmidrule(lr){3-6}\\cmidrule(lr){7-10}\nComparison & Isolates & Total & Time & Type & Silence & Total & Time & Type & Silence\\\\\n"
+           "\\begin{tabular}{@{}llcccccccc@{}}\n\\toprule\n & & \\multicolumn{4}{c}{Same number of events per input} & "
+           "\\multicolumn{4}{c}{Same number of tokens per input}\\\\\n"
+           "\\cmidrule(lr){3-6}\\cmidrule(lr){7-10}\nComparison & Question & \\textbf{Total} & Time & Type & Silence & "
+           "\\textbf{Total} & Time & Type & Silence\\\\\n"
            "\\midrule\n" + "\n".join(lines2) + "\n\\bottomrule\n\\end{tabular}\n\\end{table*}\n")
     write(out, "rq3_conditions", tex, R, "rq3_conditions", data)
 
@@ -388,23 +432,35 @@ def table_strata(runs, out, R, figs: Path):
         edges = np.unique([-np.inf, *ev.prev_len.quantile([1 / 3, 2 / 3]).values, np.inf])
         if len(edges) == 4:   # skipped when lengths are too uniform to form three groups
             ev["plen"] = pd.cut(ev.prev_len, edges, labels=["short", "medium", "long"]).astype(str)
-            groups.append(("plen", "Length of the previous review", ["short", "medium", "long"]))
+            if all((ev.plen == g).any() for g in ("short", "medium", "long")):   # e.g. reviews cut at a fixed length
+                groups.append(("plen", "Length of the previous review", ["short", "medium", "long"]))
+    names = {"hist": ("Earlier purchases of the user", {"17+": "17 or more"}),
+             "freq": ("How common the category is in training", {}),
+             "rel": ("Category of the previous purchase", {"same type": "same category", "same parent": "related category",
+                                                          "other": "unrelated category"}),
+             "sim": ("Similarity of the last two reviews", {"Q1 (least)": "least similar quarter", "Q2": "second quarter",
+                                                           "Q3": "third quarter", "Q4 (most)": "most similar quarter"}),
+             "plen": ("Length of the previous review", {})}
+    N = len(ev)
     lines, data = [], {}
+
+    def row(label, share, r):
+        return f"\\quad {label} & {share} & {fmt(*r['type'], sign=True)} & {fmt(*r['time'], sign=True)}\\\\"
+
     for col, title, keys in groups:
         rows = _stratum_rows(ev, col, keys)
-        lines.append(f"\\multicolumn{{5}}{{@{{}}l}}{{\\emph{{{title}}}}}\\\\")
+        head, lab = names.get(col, (title, {}))
+        lines.append(f"\\multicolumn{{4}}{{@{{}}l}}{{\\emph{{{head}}}}}\\\\")
         for k, r in rows.items():
             data[f"{title}/{k}"] = r
-            lines.append(f"\\quad {k} & {r['n']} & {fmt(*r['time'], sign=True)} & {fmt(*r['type'], sign=True)} & "
-                         f"{fmt(*r['total'], sign=True)}\\\\")
+            lines.append(row(lab.get(k, k), f"{100 * r['n'] / N:.0f}\\%", r))
     # cold start: users never seen in training
     u = paired_users(A, B, unseen=True)
     if u is not None and len(u):
-        lines.append("\\multicolumn{5}{@{}l}{\\emph{Users not seen in training}}\\\\")
+        lines.append("\\multicolumn{4}{@{}l}{\\emph{New users (not seen in training)}}\\\\")
         r = {"n": int(u.n.sum()), "time": boot(u, "time"), "type": boot(u, "type"), "total": boot(u, "total")}
         data["unseen users"] = r
-        lines.append(f"\\quad all & {r['n']} & {fmt(*r['time'], sign=True)} & {fmt(*r['type'], sign=True)} & "
-                     f"{fmt(*r['total'], sign=True)}\\\\")
+        lines.append(row("all new users", "--", r))
     # training size: FULL vs NO-TEXT trained on a fraction of the training users
     for frac in (0.1, 0.3):
         Af = _by_seed(pick(rs3, variant=f"full_frac{frac}"))
@@ -412,16 +468,17 @@ def table_strata(runs, out, R, figs: Path):
         uf = paired_users(Af, Bf)
         if uf is None or not len(uf):
             continue
-        if not any("training users" in x for x in lines):
-            lines.append("\\multicolumn{5}{@{}l}{\\emph{Share of training users}}\\\\")
+        if not any("Less training data" in x for x in lines):
+            lines.append("\\multicolumn{4}{@{}l}{\\emph{Less training data (both models retrained)}}\\\\")
         r = {"n": int(uf.n.sum()), "time": boot(uf, "time"), "type": boot(uf, "type"), "total": boot(uf, "total")}
         data[f"train_frac/{frac}"] = r
-        lines.append(f"\\quad {int(frac * 100)}\\% & {r['n']} & {fmt(*r['time'], sign=True)} & {fmt(*r['type'], sign=True)} & "
-                     f"{fmt(*r['total'], sign=True)}\\\\")
-    tex = ("\\begin{table}[t]\n\\caption{Where the reviews help: gain of FULL over NO-TEXT (event budget; nats per event, "
-           "positive means the reviews help), split into time and type parts, by stratum. $\\pm$: half-width of a 95\\% "
-           "interval from a paired bootstrap over users; gains are averaged over seeds.}\n\\label{tab:rq3strata}\n"
-           "\\footnotesize\\setlength{\\tabcolsep}{3pt}\n\\begin{tabular}{@{}lrccc@{}}\n\\toprule\nStratum & Events & Time & Type & Total\\\\\n"
+        lines.append(row(f"{int(frac * 100)}\\% of the users", "--", r))
+    note = "One seed" if len({r["tags"].get("seed") for r in rs3}) <= 1 else "Means over seeds"
+    tex = ("\\begin{table}[t]\n\\caption{Where do reviews help? Gain of FULL over NO-TEXT by group of test events "
+           f"(nats per event; positive means the reviews help). {note}.}}\n\\label{{tab:rq3strata}}\n"
+           "\\footnotesize\\setlength{\\tabcolsep}{3pt}\n\\begin{tabular}{@{}lrcc@{}}\n\\toprule\n"
+           " & & \\multicolumn{2}{c}{Gain from reviews}\\\\\n\\cmidrule(lr){3-4}\n"
+           "Group of test events & Share & Type & Time\\\\\n"
            "\\midrule\n" + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}\n")
     write(out, "rq3_strata", tex, R, "rq3_strata", data)
     try:   # figure: gain vs number of earlier events
@@ -461,7 +518,7 @@ def table_named_gen(runs, out, R):
         lines.append(f"{label} & {fmt(nll[0], nll[1])} & {fmt(ty[0], ty[1])} & {fmt(f1[0], f1[1])}\\\\")
     if lines:
         tex = ("\\begin{table}[t]\n\\caption{Type names on the output side (NAMED-OUT): the type tokens start from the "
-               "LLM's embedding of the type name. NLL, its type part (nats per event), and type macro-F1.}\n"
+               f"LLM's embedding of the type name. NLL, its type part (nats per event), and type macro-F1. {rq3_note(rs3, False)}}}\n"
                "\\label{tab:rq3named}\n\\footnotesize\\setlength{\\tabcolsep}{3pt}\n\\begin{tabular}{@{}lccc@{}}\n\\toprule\n"
                "Input & NLL & Type NLL & Macro-F1\\\\\n\\midrule\n" + "\n".join(lines) +
                "\n\\bottomrule\n\\end{tabular}\n\\end{table}\n")
@@ -482,7 +539,8 @@ def table_named_gen(runs, out, R):
         tex = ("\\begin{table}[t]\n\\caption{Writing the next description (FULL+GEN) with description-loss weight "
                "$\\lambda_{\\text{d}}$ ($0$ is FULL). Time, type and total NLL (nats per event), description "
                "perplexity, ROUGE-L of sampled reviews (\\%), and share of generated 8-grams found in the training "
-               "reviews (\\%).}\n\\label{tab:rq3gen}\n\\footnotesize\\setlength{\\tabcolsep}{2.5pt}\n\\begin{tabular}{@{}ccccccc@{}}\n"
+               f"reviews (\\%). {rq3_note(rs3, False)}}}\n\\label{{tab:rq3gen}}\n"
+               "\\footnotesize\\setlength{\\tabcolsep}{2.5pt}\n\\begin{tabular}{@{}ccccccc@{}}\n"
                "\\toprule\n$\\lambda_{\\text{d}}$ & Time & Type & NLL & PPL & ROUGE-L & 8-gram\\\\\n\\midrule\n"
                + "\n".join(lines) + "\n\\bottomrule\n\\end{tabular}\n\\end{table}\n")
         write(out, "rq3_gen", tex, R, "rq3_gen", data)

@@ -175,6 +175,7 @@ def run_baseline(cfg: dict, splits: dict, K: int, out_dir: str | Path, log, true
     # ----- test metrics
     model.eval()
     rows, gaps = [], []
+    deltas = [float(d) for d in (cfg.get("eval", {}).get("interval_deltas") or [])]   # see htpp/interval.py
     with torch.no_grad():
         for b in batches(test, False):
             tau, t, k, sc, gap, mask = [x.to(dev) for x in _pad(b, tau_min)]
@@ -198,12 +199,28 @@ def run_baseline(cfg: dict, splits: dict, K: int, out_dir: str | Path, log, true
                 lo = torch.where(c < 0.5, mid, lo)
                 hi = torch.where(c < 0.5, hi, mid)
             med = torch.exp((lo + hi) / 2)
+            ints = []
+            if deltas:   # probability of the recorded interval of waiting times (double precision)
+                raw = torch.zeros(tau.shape, dtype=torch.float64, device=tau.device)
+                for i, s in enumerate(b):
+                    raw[i, : len(s)] = torch.tensor(np.asarray(s.tau, float), dtype=torch.float64)
+                r1 = raw[:, 1:]
+                lwd, mud, lsd = lw.double(), m_.double(), ls.double()
+                for dl in deltas:
+                    small = r1 < dl / 2
+                    lo_ = torch.where(small, torch.zeros_like(r1), r1 - dl / 2)
+                    hi_ = torch.where(small, torch.full_like(r1, dl), r1 + dl / 2)
+                    s_lo = model.log_survival(lo_, lwd, mud, lsd)
+                    s_hi = model.log_survival(hi_, lwd, mud, lsd)
+                    lp = s_lo + torch.log(-torch.expm1((s_hi - s_lo).clamp(max=-1e-15)))
+                    ints.append(-(lp - torch.log(hi_ - lo_)))
             for i, s in enumerate(b):
                 for j in range(max(1, int(s.n_hist)), len(s)):
                     rows.append({"seq": s.sid, "idx": j, "k": int(s.k[j]), "prev_k": int(s.k[j - 1]), "hist_len": j,
                                  "tau": float(s.tau[j]), "nll_time": float(-lp_t[i, j - 1]), "nll_type": float(-lp_k[i, j - 1]),
                                  "pred_k": int(pred_k[i, j - 1]), "pit": float(pit[i, j - 1]),
-                                 "pred_mean": float(mean[i, j - 1]), "pred_median": float(med[i, j - 1])})
+                                 "pred_mean": float(mean[i, j - 1]), "pred_median": float(med[i, j - 1]),
+                                 **{f"nll_time_int{di}": float(x[i, j - 1]) for di, x in enumerate(ints)}})
                 if not math.isnan(float(gap[i])):
                     gaps.append({"seq": s.sid, "gap": float(gap[i]), "nll_sil": float(-lS[i]), "true_nll": s.true_nll})
     df = pd.DataFrame(rows)
@@ -224,6 +241,11 @@ def run_baseline(cfg: dict, splits: dict, K: int, out_dir: str | Path, log, true
     if all(x is not None for x in tn):
         m["nll_true"] = float(np.sum(tn) / n)
         m["gap_to_true"] = m["nll"] - m["nll_true"]
+    if deltas:
+        m["interval"] = {}
+        for di, dl in enumerate(deltas):
+            it = float(df[f"nll_time_int{di}"].sum() / n)
+            m["interval"][repr(dl)] = {"delta": dl, "nll_time": it, "nll": it + m["nll_type"] + m["nll_sil"]}
     m["pred_cap"] = cap
     m["params"] = int(sum(p.numel() for p in model.parameters()))
     m["train_seconds"] = timer()

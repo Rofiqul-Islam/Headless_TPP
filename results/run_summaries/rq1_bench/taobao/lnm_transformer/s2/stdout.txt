@@ -1,0 +1,13 @@
+05:17:12 INFO run <project>\runs\rq1_bench\taobao\lnm_transformer\s2 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_transformer', 'dataset': 'taobao', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+<project>\htpp\baselines.py:32: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, layers)
+05:17:14 INFO baseline epoch 0 val nll -0.8195 best -0.8195
+05:17:15 INFO baseline epoch 5 val nll -1.1639 best -1.1639
+05:17:16 INFO baseline epoch 10 val nll -1.2121 best -1.2121
+05:17:17 INFO baseline epoch 15 val nll -1.2320 best -1.2320
+05:17:18 INFO baseline epoch 20 val nll -1.2453 best -1.2453
+05:17:19 INFO baseline epoch 25 val nll -1.2474 best -1.2494
+05:17:20 INFO baseline epoch 30 val nll -1.2469 best -1.2494
+05:17:21 INFO baseline epoch 35 val nll -1.2421 best -1.2504
+05:17:22 INFO baseline epoch 40 val nll -1.2415 best -1.2504
+05:17:30 INFO test {'n_events': 27955, 'n_gaps': 0, 'nll_time': -2.7448225270484348, 'nll_type': 1.3766191340362255, 'nll_sil': 0.0, 'nll': -1.3682033930122093, 'type_acc': 0.6089787157932391, 'type_macro_f1': 0.4500791336466702, 'pit_ks': 0.007726948315844383, 'pit_ece': 0.0021391522089071746, 'rmse_mean': 0.12464520825925182, 'mae_median': 0.041965630068002545, 'mae_log': 0.03562034783053445, 'pred_cap': 1.0000000000000002, 'params': 103913, 'train_seconds': 14.72311782836914}

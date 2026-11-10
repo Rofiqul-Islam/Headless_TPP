@@ -1,0 +1,129 @@
+{
+  "experiment": "rq1_bench",
+  "variant": "scratch",
+  "method": "headless",
+  "out_dir": "<project>\\runs/rq1_bench/taobao/scratch/s1",
+  "model": {
+    "name": "Qwen/Qwen2.5-0.5B",
+    "pretrained": false,
+    "dtype": "bfloat16",
+    "attn_implementation": "sdpa",
+    "gradient_checkpointing": true,
+    "mark_init": "mean",
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "dropout": 0.05,
+      "targets": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj",
+        "gate_proj",
+        "up_proj",
+        "down_proj"
+      ]
+    }
+  },
+  "timecode": {
+    "kind": "hier",
+    "branching": [
+      8,
+      8,
+      8
+    ],
+    "p_tail": 0.01,
+    "split": "quantile",
+    "time_resolution": null,
+    "digits": {
+      "n_int": 3,
+      "n_dec": 2,
+      "scale": null
+    }
+  },
+  "data": {
+    "dir": "<project>\\data/taobao",
+    "condition": "no_text",
+    "budget": "event",
+    "max_events": 128,
+    "max_tokens": 2048,
+    "ctx_frac": 0.5,
+    "desc_max_tokens": 48,
+    "silence": true,
+    "prompt": "The following is a sequence of events. Each event gives its waiting time, its type and optional text.\n",
+    "max_train_seqs": null,
+    "max_val_seqs": null,
+    "max_test_seqs": null
+  },
+  "train": {
+    "seed": 1,
+    "lr": 0.0003,
+    "lr_new": 0.001,
+    "weight_decay": 0.0,
+    "warmup_frac": 0.03,
+    "min_lr_ratio": 0.1,
+    "clip": 1.0,
+    "max_tokens_per_batch": 16384,
+    "eval_tokens_per_batch": 32768,
+    "max_batch_size": 32,
+    "grad_accum": 1,
+    "workers": 2,
+    "log_every": 50,
+    "eval_every": 500,
+    "eval_max_batches": null,
+    "patience": 6,
+    "synthetic_sequences": 2000,
+    "lambda_d": 0.0,
+    "gen": false,
+    "stages": [
+      {
+        "name": "grammar",
+        "steps": 200,
+        "losses": [
+          "time",
+          "type"
+        ],
+        "train": "new_tokens",
+        "synthetic_frac": 0.5
+      },
+      {
+        "name": "next_event",
+        "epochs": 2,
+        "losses": [
+          "time",
+          "type",
+          "desc"
+        ]
+      },
+      {
+        "name": "silence",
+        "epochs": 1,
+        "losses": [
+          "time",
+          "type",
+          "desc",
+          "sil"
+        ]
+      }
+    ]
+  },
+  "eval": {
+    "calibrate": true,
+    "calibrate_marks": true,
+    "predict_depth": 3,
+    "predict_max_events": 3000,
+    "gen_max_events": 300,
+    "top_p": 0.9
+  },
+  "baseline": {
+    "encoder": "gru",
+    "d": 64,
+    "layers": 2,
+    "heads": 4,
+    "n_comp": 8,
+    "lr": 0.001,
+    "batch_size": 64,
+    "epochs": 100,
+    "patience": 10
+  }
+}

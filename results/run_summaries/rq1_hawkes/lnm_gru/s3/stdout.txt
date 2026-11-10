@@ -1,0 +1,9 @@
+06:55:58 INFO run <project>\runs\rq1_hawkes\lnm_gru\s3 | tags {'experiment': 'rq1_hawkes', 'variant': 'lnm_gru', 'dataset': 'hawkes', 'model': 'baseline-gru', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 3, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+06:56:00 INFO baseline epoch 0 val nll 1.8258 best 1.8258
+06:56:01 INFO baseline epoch 5 val nll 1.8118 best 1.8117
+06:56:02 INFO baseline epoch 10 val nll 1.8102 best 1.8102
+06:56:04 INFO baseline epoch 15 val nll 1.8103 best 1.8099
+06:56:05 INFO baseline epoch 20 val nll 1.8097 best 1.8097
+06:56:06 INFO baseline epoch 25 val nll 1.8111 best 1.8097
+06:56:07 INFO baseline epoch 30 val nll 1.8126 best 1.8097
+06:56:15 INFO test {'n_events': 30910, 'n_gaps': 500, 'nll_time': 0.7122549106179221, 'nll_type': 1.0913463542257764, 'nll_sil': 0.024746120891999904, 'nll': 1.8283473857356984, 'type_acc': 0.37770947913296665, 'type_macro_f1': 0.33066918842005055, 'pit_ks': 0.009788799987800356, 'pit_ece': 0.002206405693950178, 'rmse_mean': 1.4329232524262983, 'mae_median': 0.7245127709311581, 'mae_log': 0.3309270053994379, 'nll_true': 1.8175060523006867, 'gap_to_true': 0.010841333435011702, 'pred_cap': 28.24098544299099, 'params': 52059, 'train_seconds': 14.303292989730835}

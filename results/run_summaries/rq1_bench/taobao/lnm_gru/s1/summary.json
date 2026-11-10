@@ -1,0 +1,192 @@
+{
+  "tags": {
+    "experiment": "rq1_bench",
+    "variant": "lnm_gru",
+    "dataset": "taobao",
+    "model": "baseline-gru",
+    "method": "baseline",
+    "condition": "no_text",
+    "budget": "event",
+    "seed": 1,
+    "gen": false,
+    "lambda_d": 0.0,
+    "train_frac": 1.0,
+    "mark_init": "mean",
+    "timecode": "hier8x8x8",
+    "silence": true
+  },
+  "metrics": {
+    "n_events": 27955,
+    "n_gaps": 0,
+    "nll_time": -2.7523284609768517,
+    "nll_type": 1.367884772146253,
+    "nll_sil": 0.0,
+    "nll": -1.3844436888305987,
+    "type_acc": 0.614058307994992,
+    "type_macro_f1": 0.4566892532410669,
+    "pit_ks": 0.013138081152821668,
+    "pit_ece": 0.002990520479341799,
+    "rmse_mean": 0.12456442401553545,
+    "mae_median": 0.04197259405976742,
+    "mae_log": 0.03562711092337931,
+    "pred_cap": 1.0000000000000002,
+    "params": 53865,
+    "train_seconds": 12.459867715835571
+  },
+  "metrics_raw": {
+    "n_events": 27955,
+    "n_gaps": 0,
+    "nll_time": -2.7523284609768517,
+    "nll_type": 1.367884772146253,
+    "nll_sil": 0.0,
+    "nll": -1.3844436888305987,
+    "type_acc": 0.614058307994992,
+    "type_macro_f1": 0.4566892532410669,
+    "pit_ks": 0.013138081152821668,
+    "pit_ece": 0.002990520479341799,
+    "rmse_mean": 0.12456442401553545,
+    "mae_median": 0.04197259405976742,
+    "mae_log": 0.03562711092337931,
+    "pred_cap": 1.0000000000000002,
+    "params": 53865,
+    "train_seconds": 12.459867715835571
+  },
+  "env": {
+    "python": "3.11.18",
+    "cwd": "<project>",
+    "torch": "2.12.1+cu130",
+    "cuda": true,
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "transformers": "4.57.6",
+    "peft": "0.17.1"
+  },
+  "config": {
+    "experiment": "rq1_bench",
+    "variant": "lnm_gru",
+    "method": "baseline",
+    "out_dir": "<project>\\runs/rq1_bench/taobao/lnm_gru/s1",
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B",
+      "pretrained": true,
+      "dtype": "bfloat16",
+      "attn_implementation": "sdpa",
+      "gradient_checkpointing": true,
+      "mark_init": "mean",
+      "lora": {
+        "r": 16,
+        "alpha": 32,
+        "dropout": 0.05,
+        "targets": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ]
+      }
+    },
+    "timecode": {
+      "kind": "hier",
+      "branching": [
+        8,
+        8,
+        8
+      ],
+      "p_tail": 0.01,
+      "split": "quantile",
+      "time_resolution": null,
+      "digits": {
+        "n_int": 3,
+        "n_dec": 2,
+        "scale": null
+      }
+    },
+    "data": {
+      "dir": "<project>\\data/taobao",
+      "condition": "no_text",
+      "budget": "event",
+      "max_events": 128,
+      "max_tokens": 2048,
+      "ctx_frac": 0.5,
+      "desc_max_tokens": 48,
+      "silence": true,
+      "prompt": "The following is a sequence of events. Each event gives its waiting time, its type and optional text.\n",
+      "max_train_seqs": null,
+      "max_val_seqs": null,
+      "max_test_seqs": null
+    },
+    "train": {
+      "seed": 1,
+      "lr": 0.0002,
+      "lr_new": 0.001,
+      "weight_decay": 0.0,
+      "warmup_frac": 0.03,
+      "min_lr_ratio": 0.1,
+      "clip": 1.0,
+      "max_tokens_per_batch": 16384,
+      "eval_tokens_per_batch": 32768,
+      "max_batch_size": 32,
+      "grad_accum": 1,
+      "workers": 2,
+      "log_every": 50,
+      "eval_every": 500,
+      "eval_max_batches": null,
+      "patience": 6,
+      "synthetic_sequences": 2000,
+      "lambda_d": 0.0,
+      "gen": false,
+      "stages": [
+        {
+          "name": "grammar",
+          "steps": 200,
+          "losses": [
+            "time",
+            "type"
+          ],
+          "train": "new_tokens",
+          "synthetic_frac": 0.5
+        },
+        {
+          "name": "next_event",
+          "epochs": 2,
+          "losses": [
+            "time",
+            "type",
+            "desc"
+          ]
+        },
+        {
+          "name": "silence",
+          "epochs": 1,
+          "losses": [
+            "time",
+            "type",
+            "desc",
+            "sil"
+          ]
+        }
+      ]
+    },
+    "eval": {
+      "calibrate": true,
+      "calibrate_marks": true,
+      "predict_depth": 3,
+      "predict_max_events": 3000,
+      "gen_max_events": 300,
+      "top_p": 0.9
+    },
+    "baseline": {
+      "encoder": "gru",
+      "d": 64,
+      "layers": 2,
+      "heads": 4,
+      "n_comp": 8,
+      "lr": 0.001,
+      "batch_size": 64,
+      "epochs": 100,
+      "patience": 10
+    }
+  }
+}

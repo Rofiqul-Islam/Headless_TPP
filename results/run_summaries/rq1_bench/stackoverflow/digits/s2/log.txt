@@ -1,0 +1,19 @@
+04:41:17 INFO run <project>\runs\rq1_bench\stackoverflow\digits\s2 | tags {'experiment': 'rq1_bench', 'variant': 'digits', 'dataset': 'stackoverflow', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'digits', 'silence': True}
+04:41:20 INFO data <project>\data/stackoverflow | condition=no_text budget=event | K=22 | scored events {'train': 89096, 'val': 25361, 'test': 26117}
+04:41:20 INFO time code: kind=digits branching=[10, 10, 10, 10, 10] a_max=10 beta=0.4076 resolution=0.0001 | new tokens=26
+04:41:20 INFO train windows=1401 tokens/window mean=473 max=728
+04:41:23 INFO training: 347 optimizer steps in stages [('grammar', 200), ('next_event', 98), ('silence', 49)], 49 train batches per epoch, trainable params 18.54M
+04:41:23 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+04:42:36 INFO step 50/347 [grammar] loss 12.0636 lr 1.94e-04 73s
+04:44:00 INFO step 100/347 [grammar] loss 11.8017 lr 1.70e-04 157s
+04:45:05 INFO step 150/347 [grammar] loss 11.8531 lr 1.34e-04 222s
+04:46:06 INFO step 200/347 [grammar] loss 11.8018 lr 9.21e-05 283s
+04:46:06 INFO stage next_event: 98 steps, losses ['time', 'type'], train all
+04:47:37 INFO step 250/347 [next_event] loss 11.5376 lr 5.44e-05 374s
+04:49:16 INFO   val nll 2.2095 (time 0.7000 type 1.5095 sil 0.0000) select 2.2095 *
+04:49:16 INFO stage silence: 49 steps, losses ['sil', 'time', 'type'], train all
+04:49:20 INFO step 300/347 [silence] loss 11.0915 lr 2.85e-05 477s
+04:50:58 INFO   val nll 2.2004 (time 0.6960 type 1.5043 sil 0.0000) select 2.2004 *
+04:50:58 INFO loaded best checkpoint (val 2.2004) after 575s
+04:51:12 INFO calibration temperatures {'time': [0.935967743396759, 0.977483332157135, 1.0357534885406494, 0.9756730794906616, 1.0109161138534546], 'mark': 0.9928025603294373, 'val_nll_before': 2.2003793716430664, 'val_nll_after': 2.1982507705688477}
+04:51:50 INFO test (calibrated): n_events=26117 n_gaps=0 nll_time=0.6537 nll_type=1.5552 nll_sil=0.0000 nll=2.2089 type_acc=0.4740 type_macro_f1=0.1465 pit_ks=0.0166 pit_ece=0.0031 time_tokens_per_event=4.9980 n_pred=3000 rmse_mean=0.9514 mae_median=0.6067 mae_log=0.3109 pred_cap=20.3379

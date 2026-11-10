@@ -1,0 +1,19 @@
+\begin{table*}[t]
+\caption{E1b: benchmarks. Held-out NLL of the density at the recorded waiting times (nats per event; with rounded timestamps it can favour sharp peaks, see text), RMSE of the predicted mean waiting time (capped at the longest training wait), and type accuracy, on the same events for every model. Best value per column in bold. Means over 2--3 seeds.}
+\label{tab:rq1bench}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccccccccccc@{}}
+\toprule
+ & \multicolumn{3}{c}{Retweet} & \multicolumn{3}{c}{StackOverflow} & \multicolumn{3}{c}{Taobao} & \multicolumn{3}{c}{Amazon}\\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7} \cmidrule(lr){8-10} \cmidrule(lr){11-13}
+ & NLL & RMSE & Acc. & NLL & RMSE & Acc. & NLL & RMSE & Acc. & NLL & RMSE & Acc.\\
+\midrule
+Headless-TPP (ours) & 6.345 & 14553 & \textbf{0.615} & \textbf{2.186} & \textbf{0.952} & 0.473 & \textbf{$-$2.828} & 0.131 & \textbf{0.622} & $-$0.778 & 0.329 & 0.409\\
+\quad without calibration (stage 4) & 6.345 & 14554 & 0.615 & 2.188 & 0.952 & 0.473 & $-$2.825 & 0.131 & 0.622 & $-$0.777 & 0.329 & 0.409\\
+\quad digit strings instead of time tokens & 6.258 & \textbf{14200} & \textbf{0.615} & 2.208 & \textbf{0.952} & \textbf{0.474} & $-$2.775 & 0.131 & \textbf{0.622} & \textbf{$-$0.819} & 0.329 & \textbf{0.411}\\
+\quad no language pre-training (0.5B) & 6.357 & 14629 & 0.612 & 2.248 & 0.962 & 0.466 & $-$2.789 & 0.131 & 0.617 & $-$0.718 & 0.331 & 0.398\\
+GRU + log-normal mixture & \textbf{5.628} & 14488 & 0.610 & 2.200 & 1.012 & 0.458 & $-$1.385 & \textbf{0.125} & 0.614 & $-$0.444 & \textbf{0.328} & 0.349\\
+Transformer + log-normal mixture & 5.679 & 14719 & 0.609 & 2.226 & 1.013 & 0.455 & $-$1.365 & \textbf{0.125} & 0.609 & $-$0.491 & 0.329 & 0.353\\
+\bottomrule
+\end{tabular}
+\end{table*}

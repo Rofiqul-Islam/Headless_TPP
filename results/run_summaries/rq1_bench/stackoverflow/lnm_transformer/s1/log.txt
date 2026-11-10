@@ -1,0 +1,15 @@
+14:06:47 INFO run <project>\runs\rq1_bench\stackoverflow\lnm_transformer\s1 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_transformer', 'dataset': 'stackoverflow', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+14:06:49 INFO baseline epoch 0 val nll 2.5335 best 2.5335
+14:06:50 INFO baseline epoch 5 val nll 2.2998 best 2.2998
+14:06:51 INFO baseline epoch 10 val nll 2.2668 best 2.2668
+14:06:52 INFO baseline epoch 15 val nll 2.2461 best 2.2461
+14:06:54 INFO baseline epoch 20 val nll 2.2352 best 2.2339
+14:06:55 INFO baseline epoch 25 val nll 2.2277 best 2.2262
+14:06:56 INFO baseline epoch 30 val nll 2.2224 best 2.2216
+14:06:57 INFO baseline epoch 35 val nll 2.2203 best 2.2196
+14:06:58 INFO baseline epoch 40 val nll 2.2157 best 2.2157
+14:06:59 INFO baseline epoch 45 val nll 2.2183 best 2.2157
+14:07:00 INFO baseline epoch 50 val nll 2.2144 best 2.2144
+14:07:02 INFO baseline epoch 55 val nll 2.2187 best 2.2144
+14:07:03 INFO baseline epoch 60 val nll 2.2201 best 2.2144
+14:07:10 INFO test {'n_events': 26117, 'n_gaps': 0, 'nll_time': 0.645789218542518, 'nll_type': 1.5822330067233699, 'nll_sil': 0.0, 'nll': 2.228022225265888, 'type_acc': 0.45533560516138916, 'type_macro_f1': 0.10623279318718917, 'pit_ks': 0.011375568131874347, 'pit_ece': 0.004139066508404487, 'rmse_mean': 1.0118576907883472, 'mae_median': 0.6295006534019212, 'mae_log': 0.3156328861625578, 'pred_cap': 20.337890625, 'params': 104558, 'train_seconds': 19.535951375961304}

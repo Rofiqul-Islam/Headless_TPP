@@ -1,0 +1,82 @@
+13:07:48 INFO run <project>\runs\rq1_bench\retweet\scratch\s1 | tags {'experiment': 'rq1_bench', 'variant': 'scratch', 'dataset': 'retweet', 'model': 'Qwen2.5-0.5B-scratch', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+13:08:04 INFO data <project>\data/retweet | condition=no_text budget=event | K=3 | scored events {'train': 2156116, 'val': 213521, 'test': 216465}
+13:08:04 INFO time code: kind=hier branching=[8, 8, 8] a_max=6.173e+04 beta=1.399e-05 resolution=1 | new tokens=31
+13:08:04 INFO train windows=28142 tokens/window mean=499 max=661
+13:08:17 INFO training: 3173 optimizer steps in stages [('grammar', 200), ('next_event', 1982), ('silence', 991)], 991 train batches per epoch, trainable params 494.09M
+13:08:17 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+13:08:48 INFO step 50/3173 [grammar] loss 6.5424 lr 1.61e-04 31s
+13:09:03 INFO step 100/3173 [grammar] loss 6.0800 lr 3.00e-04 46s
+13:09:22 INFO step 150/3173 [grammar] loss 6.0941 lr 3.00e-04 65s
+13:09:39 INFO step 200/3173 [grammar] loss 5.9753 lr 2.99e-04 82s
+13:09:39 INFO stage next_event: 1982 steps, losses ['time', 'type'], train all
+13:10:06 INFO step 250/3173 [next_event] loss 5.9416 lr 2.98e-04 109s
+13:10:31 INFO step 300/3173 [next_event] loss 5.5605 lr 2.97e-04 134s
+13:10:58 INFO step 350/3173 [next_event] loss 5.5354 lr 2.95e-04 161s
+13:11:28 INFO step 400/3173 [next_event] loss 5.4173 lr 2.94e-04 191s
+13:11:54 INFO step 450/3173 [next_event] loss 5.5088 lr 2.91e-04 217s
+13:12:20 INFO step 500/3173 [next_event] loss 5.4236 lr 2.89e-04 243s
+13:12:39 INFO   val nll 6.4816 (time 5.7023 type 0.7793 sil 0.0000) select 6.4816 *
+13:13:07 INFO step 550/3173 [next_event] loss 5.3595 lr 2.86e-04 290s
+13:13:30 INFO step 600/3173 [next_event] loss 5.4587 lr 2.82e-04 313s
+13:13:58 INFO step 650/3173 [next_event] loss 5.3996 lr 2.79e-04 341s
+13:14:22 INFO step 700/3173 [next_event] loss 5.4819 lr 2.75e-04 365s
+13:14:47 INFO step 750/3173 [next_event] loss 5.3770 lr 2.71e-04 391s
+13:15:13 INFO step 800/3173 [next_event] loss 5.4502 lr 2.67e-04 416s
+13:15:40 INFO step 850/3173 [next_event] loss 5.4450 lr 2.62e-04 443s
+13:16:05 INFO step 900/3173 [next_event] loss 5.3849 lr 2.57e-04 468s
+13:16:31 INFO step 950/3173 [next_event] loss 5.4576 lr 2.52e-04 494s
+13:16:56 INFO step 1000/3173 [next_event] loss 5.4033 lr 2.46e-04 519s
+13:17:14 INFO   val nll 6.4097 (time 5.6407 type 0.7690 sil 0.0000) select 6.4097 *
+13:17:41 INFO step 1050/3173 [next_event] loss 5.4484 lr 2.41e-04 564s
+13:18:13 INFO step 1100/3173 [next_event] loss 5.4138 lr 2.35e-04 596s
+13:18:39 INFO step 1150/3173 [next_event] loss 5.4216 lr 2.29e-04 622s
+13:19:05 INFO step 1200/3173 [next_event] loss 5.3483 lr 2.23e-04 648s
+13:19:32 INFO step 1250/3173 [next_event] loss 5.4124 lr 2.17e-04 675s
+13:19:57 INFO step 1300/3173 [next_event] loss 5.4363 lr 2.10e-04 700s
+13:20:26 INFO step 1350/3173 [next_event] loss 5.3084 lr 2.04e-04 729s
+13:20:53 INFO step 1400/3173 [next_event] loss 5.4248 lr 1.97e-04 756s
+13:21:20 INFO step 1450/3173 [next_event] loss 5.3695 lr 1.90e-04 783s
+13:21:44 INFO step 1500/3173 [next_event] loss 5.4105 lr 1.83e-04 807s
+13:22:03 INFO   val nll 6.3942 (time 5.6266 type 0.7676 sil 0.0000) select 6.3942 *
+13:22:28 INFO step 1550/3173 [next_event] loss 5.4002 lr 1.77e-04 851s
+13:22:53 INFO step 1600/3173 [next_event] loss 5.4910 lr 1.70e-04 876s
+13:23:21 INFO step 1650/3173 [next_event] loss 5.3396 lr 1.63e-04 904s
+13:23:49 INFO step 1700/3173 [next_event] loss 5.3508 lr 1.56e-04 932s
+13:24:12 INFO step 1750/3173 [next_event] loss 5.4790 lr 1.49e-04 955s
+13:24:38 INFO step 1800/3173 [next_event] loss 5.3794 lr 1.42e-04 981s
+13:25:06 INFO step 1850/3173 [next_event] loss 5.3100 lr 1.35e-04 1009s
+13:25:32 INFO step 1900/3173 [next_event] loss 5.3468 lr 1.29e-04 1035s
+13:25:58 INFO step 1950/3173 [next_event] loss 5.3880 lr 1.22e-04 1061s
+13:26:23 INFO step 2000/3173 [next_event] loss 5.4089 lr 1.16e-04 1086s
+13:26:52 INFO   val nll 6.3923 (time 5.6273 type 0.7650 sil 0.0000) select 6.3923 *
+13:27:20 INFO step 2050/3173 [next_event] loss 5.3291 lr 1.09e-04 1143s
+13:27:52 INFO step 2100/3173 [next_event] loss 5.4286 lr 1.03e-04 1175s
+13:28:19 INFO step 2150/3173 [next_event] loss 5.3259 lr 9.71e-05 1202s
+13:28:54 INFO   val nll 6.3896 (time 5.6245 type 0.7652 sil 0.0000) select 6.3896 *
+13:28:56 INFO stage silence: 991 steps, losses ['sil', 'time', 'type'], train all
+13:29:04 INFO step 2200/3173 [silence] loss 5.4481 lr 9.13e-05 1247s
+13:29:29 INFO step 2250/3173 [silence] loss 5.4012 lr 8.56e-05 1272s
+13:29:56 INFO step 2300/3173 [silence] loss 5.3698 lr 8.01e-05 1299s
+13:30:21 INFO step 2350/3173 [silence] loss 5.3607 lr 7.49e-05 1324s
+13:30:49 INFO step 2400/3173 [silence] loss 5.3703 lr 6.99e-05 1352s
+13:31:16 INFO step 2450/3173 [silence] loss 5.3063 lr 6.51e-05 1379s
+13:31:42 INFO step 2500/3173 [silence] loss 5.3911 lr 6.06e-05 1405s
+13:32:00 INFO   val nll 6.3836 (time 5.6197 type 0.7639 sil 0.0000) select 6.3836 *
+13:32:29 INFO step 2550/3173 [silence] loss 5.3069 lr 5.64e-05 1452s
+13:32:55 INFO step 2600/3173 [silence] loss 5.3694 lr 5.24e-05 1478s
+13:33:21 INFO step 2650/3173 [silence] loss 5.4311 lr 4.88e-05 1504s
+13:33:46 INFO step 2700/3173 [silence] loss 5.3957 lr 4.54e-05 1529s
+13:34:13 INFO step 2750/3173 [silence] loss 5.3578 lr 4.24e-05 1556s
+13:34:39 INFO step 2800/3173 [silence] loss 5.3164 lr 3.97e-05 1582s
+13:35:03 INFO step 2850/3173 [silence] loss 5.4001 lr 3.73e-05 1606s
+13:35:28 INFO step 2900/3173 [silence] loss 5.4006 lr 3.52e-05 1631s
+13:35:55 INFO step 2950/3173 [silence] loss 5.3732 lr 3.35e-05 1658s
+13:36:21 INFO step 3000/3173 [silence] loss 5.3480 lr 3.21e-05 1684s
+13:36:39 INFO   val nll 6.3809 (time 5.6174 type 0.7635 sil 0.0000) select 6.3809 *
+13:37:06 INFO step 3050/3173 [silence] loss 5.3755 lr 3.11e-05 1729s
+13:37:39 INFO step 3100/3173 [silence] loss 5.3376 lr 3.04e-05 1762s
+13:38:06 INFO step 3150/3173 [silence] loss 5.3693 lr 3.00e-05 1789s
+13:38:36 INFO   val nll 6.3805 (time 5.6171 type 0.7634 sil 0.0000) select 6.3805 *
+13:38:38 INFO loaded best checkpoint (val 6.3805) after 1821s
+13:38:57 INFO calibration temperatures {'time': [1.016060471534729, 1.037428617477417, 1.064893126487732], 'mark': 0.9959449768066406, 'val_nll_before': 6.380510330200195, 'val_nll_after': 6.380009174346924}
+13:39:22 INFO test (calibrated): n_events=216465 n_gaps=0 nll_time=5.5895 nll_type=0.7675 nll_sil=0.0000 nll=6.3570 type_acc=0.6118 type_macro_f1=0.4391 pit_ks=0.0421 pit_ece=0.0071 time_tokens_per_event=2.9805 n_pred=3000 rmse_mean=14702.9127 mae_median=2504.6473 mae_log=0.9990 pred_cap=582928.0000

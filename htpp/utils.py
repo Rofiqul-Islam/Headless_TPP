@@ -43,7 +43,7 @@ def load_config(paths: list[str] | str, overrides: list[str] | None = None) -> d
     cfg: dict = {}
     for p in paths:
         p = Path(p)
-        with open(p) as f:
+        with open(p, encoding="utf-8") as f:
             c = yaml.safe_load(f) or {}
         parent = c.pop("inherit", None)
         if parent:
@@ -64,7 +64,7 @@ def load_config(paths: list[str] | str, overrides: list[str] | None = None) -> d
 def save_json(obj: Any, path: str | Path) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2, default=_json_default)
 
 
@@ -79,13 +79,13 @@ def _json_default(o):
 
 
 def load_json(path: str | Path) -> Any:
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         return json.load(f)
 
 
 def read_jsonl(path: str | Path) -> list[dict]:
     out = []
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
             if line:
@@ -96,7 +96,7 @@ def read_jsonl(path: str | Path) -> list[dict]:
 def write_jsonl(rows: list[dict], path: str | Path) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
-    with open(path, "w") as f:
+    with open(path, "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r, default=_json_default) + "\n")
 
@@ -126,7 +126,7 @@ def get_logger(out_dir: str | Path | None = None, name: str = "htpp") -> logging
     logger.addHandler(h)
     if out_dir is not None:
         Path(out_dir).mkdir(parents=True, exist_ok=True)
-        fh = logging.FileHandler(Path(out_dir) / "log.txt")
+        fh = logging.FileHandler(Path(out_dir) / "log.txt", encoding="utf-8")
         fh.setFormatter(fmt)
         logger.addHandler(fh)
     logger.propagate = False

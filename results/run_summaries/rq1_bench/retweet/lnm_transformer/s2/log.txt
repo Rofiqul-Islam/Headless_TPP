@@ -1,0 +1,6 @@
+04:31:32 INFO run <project>\runs\rq1_bench\retweet\lnm_transformer\s2 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_transformer', 'dataset': 'retweet', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+04:31:37 INFO baseline epoch 0 val nll 6.0066 best 6.0066
+04:31:52 INFO baseline epoch 5 val nll 5.7786 best 5.7786
+04:32:07 INFO baseline epoch 10 val nll 5.7656 best 5.7312
+04:32:22 INFO baseline epoch 15 val nll 5.7902 best 5.7312
+04:33:12 INFO test {'n_events': 216465, 'n_gaps': 0, 'nll_time': 4.909149376253101, 'nll_type': 0.7727656058685047, 'nll_sil': 0.0, 'nll': 5.681914982121605, 'type_acc': 0.6081352643614442, 'type_macro_f1': 0.42663266691119955, 'pit_ks': 0.01280202049669682, 'pit_ece': 0.003449980366340981, 'rmse_mean': 14732.961306139836, 'mae_median': 2274.660051500572, 'mae_log': 1.0494270008864088, 'pred_cap': 582928.0, 'params': 102107, 'train_seconds': 94.45894408226013}

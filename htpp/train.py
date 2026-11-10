@@ -3,6 +3,7 @@ calibration, which is done after training in evaluate.py)."""
 from __future__ import annotations
 
 import math
+import os
 from functools import partial
 from pathlib import Path
 
@@ -15,6 +16,8 @@ from .utils import Timer
 
 
 def make_loader(ds, batches, pad_id, n_levels, dtype, workers=2):
+    if os.name == "nt":      # Windows: worker processes start slowly and must re-pickle the data
+        workers = 0
     return torch.utils.data.DataLoader(ds, batch_sampler=batches, num_workers=workers,
                                        collate_fn=partial(collate, pad_id=pad_id, n_levels=n_levels, dtype=dtype),
                                        persistent_workers=False)

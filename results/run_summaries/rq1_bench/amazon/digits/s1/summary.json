@@ -1,0 +1,260 @@
+{
+  "tags": {
+    "experiment": "rq1_bench",
+    "variant": "digits",
+    "dataset": "amazon",
+    "model": "Qwen2.5-1.5B",
+    "method": "headless",
+    "condition": "no_text",
+    "budget": "event",
+    "seed": 1,
+    "gen": false,
+    "lambda_d": 0.0,
+    "train_frac": 1.0,
+    "mark_init": "mean",
+    "timecode": "digits",
+    "silence": true
+  },
+  "metrics": {
+    "n_events": 82197,
+    "n_gaps": 0,
+    "nll_time": -2.66913001507362,
+    "nll_type": 1.8517775731857715,
+    "nll_sil": 0.0,
+    "nll": -0.8173524418878486,
+    "type_acc": 0.4106232587564023,
+    "type_macro_f1": 0.1975506204089392,
+    "pit_ks": 0.005922816918965124,
+    "pit_ece": 0.0012647663540031856,
+    "time_tokens_per_event": 5.0,
+    "n_pred": 3000,
+    "rmse_mean": 0.32934364398576654,
+    "mae_median": 0.23851770859073343,
+    "mae_log": 0.17490971145355688,
+    "pred_cap": 0.7999971801000001
+  },
+  "metrics_raw": {
+    "n_events": 82197,
+    "n_gaps": 0,
+    "nll_time": -2.6689116118712475,
+    "nll_type": 1.8519243421941267,
+    "nll_sil": 0.0,
+    "nll": -0.8169872696771208,
+    "type_acc": 0.4106232587564023,
+    "type_macro_f1": 0.1975506204089392,
+    "pit_ks": 0.004671715357634998,
+    "pit_ece": 0.0012421377909169432,
+    "time_tokens_per_event": 5.0,
+    "n_pred": 3000,
+    "rmse_mean": 0.32941259359171765,
+    "mae_median": 0.2385286142046563,
+    "mae_log": 0.17491600293473528
+  },
+  "metrics_unseen": null,
+  "temps": {
+    "time": [
+      1.0191211700439453,
+      1.0867429971694946,
+      1.2052346467971802,
+      4.792625904083252,
+      11.752814292907715
+    ],
+    "mark": 1.0278884172439575,
+    "val_nll_before": -0.8183841705322266,
+    "val_nll_after": -0.8191556930541992
+  },
+  "timecode": {
+    "kind": "digits",
+    "branching": [
+      10,
+      10,
+      10,
+      10,
+      10
+    ]
+  },
+  "train": {
+    "best_val": {
+      "nll_time": -2.6928615652410914,
+      "nll_type": 1.8744772540601684,
+      "nll_sil": 0.0,
+      "n_events": 40073,
+      "nll": -0.818384311180923,
+      "select": -0.818384311180923,
+      "step": 821,
+      "stage": "silence"
+    },
+    "steps": 821,
+    "train_seconds": 1072.4258806705475
+  },
+  "history": [
+    {
+      "nll_time": -2.6913744233180696,
+      "nll_type": 1.8838530935924749,
+      "nll_sil": 0.0,
+      "n_events": 40073,
+      "nll": -0.8075213297255948,
+      "select": -0.8075213297255948,
+      "step": 500,
+      "stage": "next_event"
+    },
+    {
+      "nll_time": -2.6918682608341338,
+      "nll_type": 1.8791094131627748,
+      "nll_sil": 0.0,
+      "n_events": 40073,
+      "nll": -0.812758847671359,
+      "select": -0.812758847671359,
+      "step": 614,
+      "stage": "next_event"
+    },
+    {
+      "nll_time": -2.6928615652410914,
+      "nll_type": 1.8744772540601684,
+      "nll_sil": 0.0,
+      "n_events": 40073,
+      "nll": -0.818384311180923,
+      "select": -0.818384311180923,
+      "step": 821,
+      "stage": "silence"
+    }
+  ],
+  "env": {
+    "python": "3.11.18",
+    "cwd": "<project>",
+    "torch": "2.12.1+cu130",
+    "cuda": true,
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "transformers": "4.57.6",
+    "peft": "0.17.1"
+  },
+  "config": {
+    "experiment": "rq1_bench",
+    "variant": "digits",
+    "method": "headless",
+    "out_dir": "<project>\\runs/rq1_bench/amazon/digits/s1",
+    "model": {
+      "name": "Qwen/Qwen2.5-1.5B",
+      "pretrained": true,
+      "dtype": "bfloat16",
+      "attn_implementation": "sdpa",
+      "gradient_checkpointing": true,
+      "mark_init": "mean",
+      "lora": {
+        "r": 16,
+        "alpha": 32,
+        "dropout": 0.05,
+        "targets": [
+          "q_proj",
+          "k_proj",
+          "v_proj",
+          "o_proj",
+          "gate_proj",
+          "up_proj",
+          "down_proj"
+        ]
+      }
+    },
+    "timecode": {
+      "kind": "digits",
+      "branching": [
+        8,
+        8,
+        8
+      ],
+      "p_tail": 0.01,
+      "split": "quantile",
+      "time_resolution": null,
+      "digits": {
+        "n_int": 3,
+        "n_dec": 2,
+        "scale": null
+      }
+    },
+    "data": {
+      "dir": "<project>\\data/amazon",
+      "condition": "no_text",
+      "budget": "event",
+      "max_events": 128,
+      "max_tokens": 2048,
+      "ctx_frac": 0.5,
+      "desc_max_tokens": 48,
+      "silence": true,
+      "prompt": "The following is a sequence of events. Each event gives its waiting time, its type and optional text.\n",
+      "max_train_seqs": null,
+      "max_val_seqs": null,
+      "max_test_seqs": null
+    },
+    "train": {
+      "seed": 1,
+      "lr": 0.0002,
+      "lr_new": 0.001,
+      "weight_decay": 0.0,
+      "warmup_frac": 0.03,
+      "min_lr_ratio": 0.1,
+      "clip": 1.0,
+      "max_tokens_per_batch": 16384,
+      "eval_tokens_per_batch": 32768,
+      "max_batch_size": 32,
+      "grad_accum": 1,
+      "workers": 2,
+      "log_every": 50,
+      "eval_every": 500,
+      "eval_max_batches": null,
+      "patience": 6,
+      "synthetic_sequences": 2000,
+      "lambda_d": 0.0,
+      "gen": false,
+      "stages": [
+        {
+          "name": "grammar",
+          "steps": 200,
+          "losses": [
+            "time",
+            "type"
+          ],
+          "train": "new_tokens",
+          "synthetic_frac": 0.5
+        },
+        {
+          "name": "next_event",
+          "epochs": 2,
+          "losses": [
+            "time",
+            "type",
+            "desc"
+          ]
+        },
+        {
+          "name": "silence",
+          "epochs": 1,
+          "losses": [
+            "time",
+            "type",
+            "desc",
+            "sil"
+          ]
+        }
+      ]
+    },
+    "eval": {
+      "calibrate": true,
+      "calibrate_marks": true,
+      "predict_depth": 3,
+      "predict_max_events": 3000,
+      "gen_max_events": 300,
+      "top_p": 0.9
+    },
+    "baseline": {
+      "encoder": "gru",
+      "d": 64,
+      "layers": 2,
+      "heads": 4,
+      "n_comp": 8,
+      "lr": 0.001,
+      "batch_size": 64,
+      "epochs": 100,
+      "patience": 10
+    }
+  }
+}

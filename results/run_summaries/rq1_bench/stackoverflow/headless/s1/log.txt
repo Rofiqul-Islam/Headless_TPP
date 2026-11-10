@@ -1,0 +1,19 @@
+13:44:11 INFO run <project>\runs\rq1_bench\stackoverflow\headless\s1 | tags {'experiment': 'rq1_bench', 'variant': 'headless', 'dataset': 'stackoverflow', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+13:44:14 INFO data <project>\data/stackoverflow | condition=no_text budget=event | K=22 | scored events {'train': 89096, 'val': 25361, 'test': 26117}
+13:44:14 INFO time code: kind=hier branching=[8, 8, 8] a_max=5.107 beta=0.6332 resolution=5.38e-07 | new tokens=50
+13:44:14 INFO train windows=1401 tokens/window mean=343 max=526
+13:44:18 INFO training: 332 optimizer steps in stages [('grammar', 200), ('next_event', 88), ('silence', 44)], 44 train batches per epoch, trainable params 18.62M
+13:44:19 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+13:45:14 INFO step 50/332 [grammar] loss 8.2330 lr 1.93e-04 56s
+13:46:10 INFO step 100/332 [grammar] loss 8.0092 lr 1.67e-04 112s
+13:47:07 INFO step 150/332 [grammar] loss 7.9546 lr 1.28e-04 169s
+13:47:59 INFO step 200/332 [grammar] loss 7.9760 lr 8.45e-05 221s
+13:47:59 INFO stage next_event: 88 steps, losses ['time', 'type'], train all
+13:49:12 INFO step 250/332 [next_event] loss 7.6880 lr 4.71e-05 294s
+13:50:18 INFO   val nll 2.1681 (time 0.6613 type 1.5067 sil 0.0000) select 2.1681 *
+13:50:18 INFO stage silence: 44 steps, losses ['sil', 'time', 'type'], train all
+13:50:33 INFO step 300/332 [silence] loss 7.6180 lr 2.43e-05 375s
+13:51:30 INFO   val nll 2.1656 (time 0.6612 type 1.5044 sil 0.0000) select 2.1656 *
+13:51:30 INFO loaded best checkpoint (val 2.1656) after 432s
+13:51:42 INFO calibration temperatures {'time': [0.9773575067520142, 1.1340956687927246, 1.3952617645263672], 'mark': 1.0002301931381226, 'val_nll_before': 2.165584087371826, 'val_nll_after': 2.164189338684082}
+13:52:04 INFO test (calibrated): n_events=26117 n_gaps=0 nll_time=0.6214 nll_type=1.5509 nll_sil=0.0000 nll=2.1723 type_acc=0.4732 type_macro_f1=0.1421 pit_ks=0.0128 pit_ece=0.0024 time_tokens_per_event=2.9807 n_pred=3000 rmse_mean=0.9529 mae_median=0.6081 mae_log=0.3119 pred_cap=20.3379

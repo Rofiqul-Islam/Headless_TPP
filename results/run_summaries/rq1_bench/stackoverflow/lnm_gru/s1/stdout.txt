@@ -1,0 +1,16 @@
+14:06:12 INFO run <project>\runs\rq1_bench\stackoverflow\lnm_gru\s1 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_gru', 'dataset': 'stackoverflow', 'model': 'baseline-gru', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+14:06:14 INFO baseline epoch 0 val nll 2.7281 best 2.7281
+14:06:15 INFO baseline epoch 5 val nll 2.3442 best 2.3442
+14:06:15 INFO baseline epoch 10 val nll 2.2859 best 2.2859
+14:06:16 INFO baseline epoch 15 val nll 2.2685 best 2.2685
+14:06:17 INFO baseline epoch 20 val nll 2.2581 best 2.2581
+14:06:18 INFO baseline epoch 25 val nll 2.2517 best 2.2517
+14:06:19 INFO baseline epoch 30 val nll 2.2438 best 2.2438
+14:06:20 INFO baseline epoch 35 val nll 2.2216 best 2.2216
+14:06:20 INFO baseline epoch 40 val nll 2.2083 best 2.2083
+14:06:21 INFO baseline epoch 45 val nll 2.2043 best 2.2040
+14:06:22 INFO baseline epoch 50 val nll 2.1991 best 2.1991
+14:06:23 INFO baseline epoch 55 val nll 2.1957 best 2.1957
+14:06:24 INFO baseline epoch 60 val nll 2.1951 best 2.1947
+14:06:25 INFO baseline epoch 65 val nll 2.1999 best 2.1947
+14:06:32 INFO test {'n_events': 26117, 'n_gaps': 0, 'nll_time': 0.6371031638632673, 'nll_type': 1.566695469263872, 'nll_sil': 0.0, 'nll': 2.203798633127139, 'type_acc': 0.457135199295478, 'type_macro_f1': 0.11515269605781973, 'pit_ks': 0.02039718704155713, 'pit_ece': 0.0038534288011639966, 'rmse_mean': 1.0127345564616268, 'mae_median': 0.6294333675145309, 'mae_log': 0.31537814239225526, 'pred_cap': 20.337890625, 'params': 54510, 'train_seconds': 17.198429107666016}

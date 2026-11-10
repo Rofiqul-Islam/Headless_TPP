@@ -217,3 +217,51 @@ def test_capped_mean():
     m = np.clip(np.searchsorted(tc.edges, xs, side="right") - 1, 0, tc.n_fine - 1)
     S = 1 - (cdf_e[m] + p[m] * (xs - tc.edges[m]) / tc.widths[m])
     assert abs(m_cap - np.trapezoid(S, xs)) < 1e-4 and m_cap <= c
+
+
+def test_interval_probability_exact():
+    """The probability of a recorded interval, read from the token tree, equals the sum of
+    the fine-bin probabilities over the interval (with the tail), and tends to the density
+    for a tiny interval."""
+    import math
+    from htpp.interval import cells, headless_interval_logp, interval_nll
+    rng = np.random.default_rng(3)
+    tc = TimeCode.fit(rng.exponential(2.0, 5000), branching=(4, 4, 2), p_tail=0.05, resolution=1e-3)
+    B, S, L = tc.branching, tc._strides, tc.L
+
+    def rnd(n):
+        x = rng.random(n) + 0.05
+        return np.log(x / x.sum())
+    full = [np.array([rnd(tc.level_size(0))])]
+    nodes = 1
+    for lv in range(1, L):
+        nodes *= B[lv - 1]
+        full.append(np.array([rnd(B[lv]) for _ in range(nodes)]))
+    pf = np.array([math.exp(sum(full[lv][j // S[lv - 1] if lv else 0][(j // S[lv]) % B[lv]] for lv in range(L)))
+                   for j in range(tc.n_fine)])
+    pt = math.exp(full[0][0][tc.tail_index])
+    test = np.concatenate([rng.exponential(2.0, 60), [0.0, tc.a_max * 1.3]])
+    paths, plen, _ = tc.encode(test)
+    n = len(test)
+    lvl = [np.full((n, tc.level_size(lv)), np.nan) for lv in range(L)]
+    for i in range(n):
+        node = 0
+        for lv in range(plen[i]):
+            lvl[lv][i] = full[lv][node]
+            node = node * B[lv] + paths[i, lv] if lv < L - 1 else node
+    branch = {i: full for i in range(n)}
+    for delta in (1e-3, 0.3, 2.0):
+        lo, hi = cells(test, delta)
+        lp, approx = headless_interval_logp(tc, lvl, paths, plen, lo, hi, branch)
+        assert not approx.any()
+        for i in range(n):
+            ex = sum(pf[j] * max(0.0, min(hi[i], tc.edges[j + 1]) - max(lo[i], tc.edges[j])) / tc.widths[j]
+                     for j in range(tc.n_fine))
+            if hi[i] > tc.a_max:
+                a2 = max(lo[i], tc.a_max)
+                ex += pt * (math.exp(-tc.beta * (a2 - tc.a_max)) - math.exp(-tc.beta * (hi[i] - tc.a_max)))
+            assert abs(math.exp(lp[i]) - ex) < 1e-9
+    lo, hi = cells(test, 1e-8)
+    lp, _ = headless_interval_logp(tc, lvl, paths, plen, lo, hi, branch)
+    dens = -(np.array([sum(lvl[lv][i][paths[i, lv]] for lv in range(plen[i])) for i in range(n)]) + tc.log_inbin(test))
+    assert np.max(np.abs(interval_nll(lp, lo, hi) - dens)) < 1e-4

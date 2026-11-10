@@ -1,0 +1,17 @@
+05:58:24 INFO run <project>\runs\rq1_bench\amazon\lnm_transformer\s2 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_transformer', 'dataset': 'amazon', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+05:58:28 INFO baseline epoch 0 val nll 0.6375 best 0.6375
+05:58:33 INFO baseline epoch 5 val nll -0.2299 best -0.2299
+05:58:37 INFO baseline epoch 10 val nll -0.3474 best -0.3474
+05:58:42 INFO baseline epoch 15 val nll -0.3844 best -0.3923
+05:58:47 INFO baseline epoch 20 val nll -0.4163 best -0.4163
+05:58:52 INFO baseline epoch 25 val nll -0.4085 best -0.4313
+05:58:56 INFO baseline epoch 30 val nll -0.4335 best -0.4488
+05:59:01 INFO baseline epoch 35 val nll -0.4490 best -0.4544
+05:59:06 INFO baseline epoch 40 val nll -0.4582 best -0.4666
+05:59:11 INFO baseline epoch 45 val nll -0.4505 best -0.4779
+05:59:16 INFO baseline epoch 50 val nll -0.4745 best -0.4843
+05:59:20 INFO baseline epoch 55 val nll -0.4774 best -0.4843
+05:59:25 INFO baseline epoch 60 val nll -0.4983 best -0.4983
+05:59:30 INFO baseline epoch 65 val nll -0.4988 best -0.5023
+05:59:35 INFO baseline epoch 70 val nll -0.4783 best -0.5023
+06:00:06 INFO test {'n_events': 82197, 'n_gaps': 0, 'nll_time': -2.500858233177343, 'nll_type': 2.000223111273296, 'nll_sil': 0.0, 'nll': -0.5006351219040468, 'type_acc': 0.3522756304974634, 'type_macro_f1': 0.14565689913862132, 'pit_ks': 0.037793006850070365, 'pit_ece': 0.008570872416268235, 'rmse_mean': 0.32955903052586766, 'mae_median': 0.23912596493617355, 'mae_log': 0.17526535438444146, 'pred_cap': 0.7999971801000001, 'params': 103784, 'train_seconds': 86.22904586791992}

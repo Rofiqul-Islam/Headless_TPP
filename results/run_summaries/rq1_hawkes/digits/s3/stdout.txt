@@ -1,0 +1,25 @@
+06:43:58 INFO run <project>\runs\rq1_hawkes\digits\s3 | tags {'experiment': 'rq1_hawkes', 'variant': 'digits', 'dataset': 'hawkes', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 3, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'digits', 'silence': True}
+06:44:01 INFO data <project>\data/hawkes | condition=no_text budget=event | K=3 | scored events {'train': 126014, 'val': 18620, 'test': 30910}
+06:44:01 INFO time code: kind=digits branching=[10, 10, 10, 10, 10] a_max=10 beta=0.4037 resolution=0.0001 | new tokens=7
+06:44:01 INFO train windows=2013 tokens/window mean=472 max=921
+`torch_dtype` is deprecated! Use `dtype` instead!
+06:44:04 INFO training: 407 optimizer steps in stages [('grammar', 200), ('next_event', 138), ('silence', 69)], 69 train batches per epoch, trainable params 18.49M
+06:44:04 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+<project>\htpp\train.py:133: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:839.)
+  run["loss"] += float(loss)
+06:45:18 INFO step 50/407 [grammar] loss 11.2475 lr 1.96e-04 74s
+06:46:16 INFO step 100/407 [grammar] loss 11.1963 lr 1.79e-04 133s
+06:47:34 INFO step 150/407 [grammar] loss 11.0725 lr 1.51e-04 210s
+06:48:37 INFO step 200/407 [grammar] loss 11.0799 lr 1.17e-04 273s
+06:48:37 INFO stage next_event: 138 steps, losses ['time', 'type'], train all
+06:50:03 INFO step 250/407 [next_event] loss 11.0547 lr 8.15e-05 359s
+06:51:23 INFO step 300/407 [next_event] loss 11.0276 lr 5.07e-05 439s
+06:52:47 INFO   val nll 1.8075 (time 0.6984 type 1.0832 sil 0.0260) select 1.8075 *
+06:52:47 INFO stage silence: 69 steps, losses ['sil', 'time', 'type'], train all
+06:53:07 INFO step 350/407 [silence] loss 11.0134 lr 2.91e-05 544s
+06:54:33 INFO step 400/407 [silence] loss 11.0490 lr 2.01e-05 629s
+06:54:56 INFO   val nll 1.8064 (time 0.7000 type 1.0832 sil 0.0232) select 1.8064 *
+06:54:57 INFO loaded best checkpoint (val 1.8064) after 653s
+06:55:09 INFO calibration temperatures {'time': [0.9688035249710083, 0.9778946042060852, 1.1134366989135742, 2.9905190467834473, 1.4847139120101929], 'mark': 1.0544686317443848, 'val_nll_before': 1.8064212799072266, 'val_nll_after': 1.8054580688476562}
+06:55:49 INFO test (calibrated): n_events=30910 n_gaps=500 nll_time=0.7148 nll_type=1.0856 nll_sil=0.0241 nll=1.8245 type_acc=0.3877 type_macro_f1=0.3520 pit_ks=0.0088 pit_ece=0.0017 time_tokens_per_event=4.9865 nll_true=1.8175 gap_to_true=0.0070 n_pred=3000 rmse_mean=1.4096 mae_median=0.7221 mae_log=0.3310 pred_cap=28.2410

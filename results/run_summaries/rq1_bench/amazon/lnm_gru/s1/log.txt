@@ -1,0 +1,13 @@
+15:07:47 INFO run <project>\runs\rq1_bench\amazon\lnm_gru\s1 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_gru', 'dataset': 'amazon', 'model': 'baseline-gru', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+15:07:50 INFO baseline epoch 0 val nll 0.1487 best 0.1487
+15:07:54 INFO baseline epoch 5 val nll -0.1754 best -0.1754
+15:07:57 INFO baseline epoch 10 val nll -0.2432 best -0.2432
+15:08:01 INFO baseline epoch 15 val nll -0.2883 best -0.3292
+15:08:04 INFO baseline epoch 20 val nll -0.3924 best -0.3924
+15:08:08 INFO baseline epoch 25 val nll -0.4327 best -0.4327
+15:08:12 INFO baseline epoch 30 val nll -0.4166 best -0.4464
+15:08:15 INFO baseline epoch 35 val nll -0.4250 best -0.4535
+15:08:19 INFO baseline epoch 40 val nll -0.4666 best -0.4666
+15:08:22 INFO baseline epoch 45 val nll -0.4472 best -0.4716
+15:08:26 INFO baseline epoch 50 val nll -0.4329 best -0.4716
+15:08:46 INFO test {'n_events': 82197, 'n_gaps': 0, 'nll_time': -2.495088365576378, 'nll_type': 2.0257812274794267, 'nll_sil': 0.0, 'nll': -0.46930713809695135, 'type_acc': 0.3504994099541346, 'type_macro_f1': 0.12154966145081965, 'pit_ks': 0.04459012669989182, 'pit_ece': 0.010759030134919767, 'rmse_mean': 0.32840282295127293, 'mae_median': 0.23742922178000217, 'mae_log': 0.17393411881574442, 'pred_cap': 0.7999971801000001, 'params': 53736, 'train_seconds': 54.71831774711609}

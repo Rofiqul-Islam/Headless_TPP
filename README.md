@@ -18,6 +18,9 @@ It implements, with a real fine-tuned LLM, everything the paper describes:
 
 Every number in the result tables is produced by these scripts; nothing is filled in by hand.
 
+**Results.** The tables of the paper, all numbers behind them, and the summary, settings and log
+of every finished run are in [`results/`](results/README.md).
+
 ---
 
 ## 1. Setup on the server
@@ -41,20 +44,28 @@ python scripts/run.py --config configs/tiny.yaml \
 
 The tiny model is random, so its numbers mean nothing; it only checks the pipeline.
 
+### On Windows (e.g. an RTX 5090)
+
+Use PowerShell. RTX 50-series GPUs need a PyTorch build for CUDA 12.8 or newer:
+
+```powershell
+conda create -n htpp python=3.11 -y; conda activate htpp
+pip install torch --index-url https://download.pytorch.org/whl/cu128
+pip install -r requirements.txt
+$env:PYTHONUTF8 = "1"
+powershell -ExecutionPolicy Bypass -File .\scripts\prepare_all.ps1   # instead of prepare_all.sh
+python scripts\experiments.py rq1 --gpus 0
+python scripts\experiments.py rq3 --gpus 0
+```
+
+On Windows the data loaders run in the main process (no worker processes); everything else is the same.
+To prepare another Amazon category, pass `-AmazonCategory Category_Name` to `prepare_all.ps1`.
+
 ## 2. Prepare the data
 
 ```bash
 bash scripts/prepare_all.sh
 ```
-
-**Windows PowerShell:** From the project root, activate the `htpp` Conda environment and run:
-
-```powershell
-.\scripts\prepare_all.ps1
-```
-
-If PowerShell blocks local scripts, use `powershell -ExecutionPolicy Bypass -File .\scripts\prepare_all.ps1` (process-only policy override). To select another Amazon category, pass `-AmazonCategory Category_Name`.
-
 
 This creates, under `data/`:
 
@@ -121,6 +132,26 @@ Upload the `.tex` files to a folder named **`generated/`** in the Overleaf proje
 each table automatically when its file exists (`\resulttable{...}` in `main.tex`), and the sentences
 that say "results will be added" switch to point at the tables. Then write the discussion from
 `results.json`.
+
+### Fair NLL on rounded timestamps (E1b)
+
+On data whose timestamps are rounded or repeat exactly (Retweet, Taobao), a density
+evaluated at the recorded value rewards whichever model makes the sharpest peaks there.
+`scripts/rescore.py` scores every model by the probability of the recorded interval
+`[tau, tau + delta)`, with `delta` the recording step, on the same test events:
+
+```bash
+python scripts/rescore.py --runs runs/rq1_bench --data data
+python scripts/make_tables.py --runs runs --out paper_tables
+```
+
+* Headless-TPP runs are reloaded from `best.pt` (no training); the token tree is expanded so
+  the interval probability is exact (digit strings: up to 1,200 extra tokens per event).
+* The GRU/Transformer baselines keep no checkpoint, so they are retrained with the same seed.
+* `delta` is detected per data set (the grid of the waiting times, else 1/1000 of the median);
+  override with `--delta retweet=1`. The log prints the step and the share of events that
+  needed an approximation. Each run gets a `rescore.json`; the benchmark table then reports
+  the interval NLL.
 
 ## 5. One run by hand
 

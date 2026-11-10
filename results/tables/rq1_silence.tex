@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{E1c: the same model trained with and without the survival term for the final quiet gap. NLL and its silence part (nats per event), gap to the true NLL (synthetic data only), PIT error of the observed events, and absolute error of the median waiting time. Means over 2 seeds; $\pm$: standard error.}
+\label{tab:rq1silence}
+\footnotesize\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Survival term & NLL & Silence & Gap & PIT KS & MAE\\
+\midrule
+\multicolumn{6}{@{}l}{\emph{Hawkes, short windows}}\\
+\quad with & 1.704{\tiny$\pm$0.003} & 0.189{\tiny$\pm$0.004} & 0.009{\tiny$\pm$0.003} & 0.118{\tiny$\pm$0.006} & 0.472{\tiny$\pm$0.003}\\
+\quad without & 1.719{\tiny$\pm$0.002} & 0.243{\tiny$\pm$0.001} & 0.024{\tiny$\pm$0.002} & 0.045{\tiny$\pm$0.002} & 0.459{\tiny$\pm$0.000}\\
+\multicolumn{6}{@{}l}{\emph{Taobao, cut at random times}}\\
+\quad with & $-$3.256{\tiny$\pm$0.011} & 0.112{\tiny$\pm$0.007} & -- & 0.057{\tiny$\pm$0.023} & 0.034{\tiny$\pm$0.000}\\
+\quad without & $-$3.253{\tiny$\pm$0.006} & 0.129{\tiny$\pm$0.001} & -- & 0.019{\tiny$\pm$0.004} & 0.034{\tiny$\pm$0.000}\\
+\bottomrule
+\end{tabular}
+\end{table}

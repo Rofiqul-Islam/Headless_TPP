@@ -1,0 +1,17 @@
+\begin{table}[t]
+\caption{E1a: synthetic Hawkes data with a known likelihood. Held-out NLL (nats per event; the true model scores 1.818), gap to the true NLL, tokens per waiting time, and PIT error (KS distance). Means over 3 seeds; $\pm$: standard error.}
+\label{tab:rq1hawkes}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Model & NLL & Gap to true & Tokens & PIT KS\\
+\midrule
+Headless-TPP, $8{\times}8{\times}8$ tokens & 1.829{\tiny$\pm$0.001} & 0.012{\tiny$\pm$0.001} & 3 & 0.019{\tiny$\pm$0.006}\\
+Headless-TPP, $32{\times}16$ & 1.831{\tiny$\pm$0.001} & 0.013{\tiny$\pm$0.001} & 2 & 0.011{\tiny$\pm$0.006}\\
+Headless-TPP, one level (512) & 1.886{\tiny$\pm$0.002} & 0.068{\tiny$\pm$0.002} & 1 & 0.012{\tiny$\pm$0.002}\\
+Digit strings (LLMTime-style) & 1.826{\tiny$\pm$0.001} & 0.008{\tiny$\pm$0.001} & 5 & 0.009{\tiny$\pm$0.000}\\
+GRU + log-normal mixture & 1.827{\tiny$\pm$0.000} & 0.010{\tiny$\pm$0.000} & -- & 0.012{\tiny$\pm$0.001}\\
+Transformer + log-normal mix. & 1.836{\tiny$\pm$0.001} & 0.019{\tiny$\pm$0.001} & -- & 0.007{\tiny$\pm$0.001}\\
+\bottomrule
+\end{tabular}
+\end{table}

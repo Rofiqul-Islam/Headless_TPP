@@ -1,0 +1,36 @@
+\begin{table}[t]
+\caption{Where do reviews help? Gain of FULL over NO-TEXT for groups of test events (event budget; nats per event; positive means the reviews help). Share: part of the test events in the group. One seed; $\pm$: 95\% interval.}
+\label{tab:rq3strata}
+\footnotesize\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}lrcc@{}}
+\toprule
+ & & \multicolumn{2}{c}{Gain from reviews}\\
+\cmidrule(lr){3-4}
+Group of test events & Share & Type & Time\\
+\midrule
+\multicolumn{4}{@{}l}{\emph{Earlier purchases of the user}}\\
+\quad 1 & 4\% & $-$0.017{\tiny$\pm$0.049} & +0.085{\tiny$\pm$0.069}\\
+\quad 2--4 & 34\% & $-$0.023{\tiny$\pm$0.015} & +0.070{\tiny$\pm$0.015}\\
+\quad 5--16 & 53\% & $-$0.011{\tiny$\pm$0.011} & +0.127{\tiny$\pm$0.011}\\
+\quad 17 or more & 9\% & $-$0.021{\tiny$\pm$0.025} & $-$0.077{\tiny$\pm$0.024}\\
+\multicolumn{4}{@{}l}{\emph{How common the category is in training}}\\
+\quad rare & 4\% & +0.137{\tiny$\pm$0.072} & +0.135{\tiny$\pm$0.037}\\
+\quad medium & 12\% & +0.097{\tiny$\pm$0.034} & +0.091{\tiny$\pm$0.024}\\
+\quad frequent & 84\% & $-$0.040{\tiny$\pm$0.008} & +0.084{\tiny$\pm$0.010}\\
+\multicolumn{4}{@{}l}{\emph{Category of the previous purchase}}\\
+\quad same category & 28\% & $-$0.093{\tiny$\pm$0.014} & +0.091{\tiny$\pm$0.015}\\
+\quad related category & 27\% & +0.008{\tiny$\pm$0.018} & +0.070{\tiny$\pm$0.017}\\
+\quad unrelated category & 45\% & +0.018{\tiny$\pm$0.011} & +0.095{\tiny$\pm$0.012}\\
+\multicolumn{4}{@{}l}{\emph{Similarity of the last two reviews}}\\
+\quad least similar quarter & 25\% & $-$0.017{\tiny$\pm$0.015} & +0.059{\tiny$\pm$0.018}\\
+\quad second quarter & 25\% & $-$0.011{\tiny$\pm$0.016} & +0.076{\tiny$\pm$0.016}\\
+\quad third quarter & 25\% & $-$0.004{\tiny$\pm$0.016} & +0.102{\tiny$\pm$0.016}\\
+\quad most similar quarter & 25\% & $-$0.032{\tiny$\pm$0.017} & +0.113{\tiny$\pm$0.020}\\
+\multicolumn{4}{@{}l}{\emph{New users (not seen in training)}}\\
+\quad all new users & -- & $-$0.012{\tiny$\pm$0.008} & +0.051{\tiny$\pm$0.010}\\
+\multicolumn{4}{@{}l}{\emph{Less training data (both models retrained)}}\\
+\quad 10\% of the users & -- & $-$0.056{\tiny$\pm$0.011} & $-$0.082{\tiny$\pm$0.015}\\
+\quad 30\% of the users & -- & $-$0.027{\tiny$\pm$0.008} & +0.069{\tiny$\pm$0.009}\\
+\bottomrule
+\end{tabular}
+\end{table}

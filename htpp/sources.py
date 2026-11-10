@@ -11,6 +11,7 @@ import io
 import json
 import pickle
 import random
+import re
 import string
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -90,11 +91,11 @@ def load_easytpp(name: str, local_dir: str | None = None):
                         key = [x for x in obj if x not in ("dim_process",)][0]
                         raw[split] = obj[key]
                     elif ext == "json":
-                        with open(p) as f:
+                        with open(p, encoding="utf-8") as f:
                             obj = json.load(f)
                         raw[split] = obj if isinstance(obj, list) else obj.get("data", obj)
                     else:
-                        with open(p) as f:
+                        with open(p, encoding="utf-8") as f:
                             raw[split] = [json.loads(x) for x in f if x.strip()]
                     break
                 if split in raw:
@@ -152,6 +153,9 @@ def _open_any(path):
     return open(path, encoding="utf-8")
 
 
+_USER_RE = re.compile(r'"(?:user_id|reviewerID)"\s*:\s*"([^"]*)"')
+
+
 def _iter_jsonl(paths):
     for p in paths:
         with _open_any(p) as f:
@@ -187,9 +191,45 @@ def build_amazon(review_paths, meta_paths, cat_level=2, K=24, min_events=5, max_
     censored. split="user": plain split of users into train/val/test."""
     rng = np.random.default_rng(seed)
     pyrng = random.Random(seed)
-    # 1) item -> category path
+    # The review files can hold tens of millions of reviews, so they are streamed three
+    # times instead of being loaded: (1) count reviews per user, (2) keep the reviews of a
+    # random sample of active users, (3) read categories only for the items they reviewed.
+    cnt_u = Counter()
+    for p in review_paths:
+        with _open_any(p) as f:
+            for line in f:
+                m = _USER_RE.search(line)
+                if m:
+                    cnt_u[m.group(1)] += 1
+    cand = sorted(u for u, c in cnt_u.items() if c >= min_events)
+    del cnt_u
+    pyrng.shuffle(cand)
+    keep = set(cand[: int(max_users * 1.5)] if max_users else cand)   # spare users for those lost to missing metadata
+    raw_rev = defaultdict(list)
+    for p in review_paths:
+        with _open_any(p) as f:
+            for line in f:
+                m = _USER_RE.search(line)
+                if not m or m.group(1) not in keep:
+                    continue
+                r = json.loads(line)
+                ts = r.get("timestamp") or r.get("unixReviewTime")
+                if ts is None:
+                    continue
+                ts = float(ts)
+                if ts > 1e11:      # milliseconds
+                    ts /= 1000.0
+                title = (r.get("title") or r.get("summary") or "").strip()
+                body = (r.get("text") or r.get("reviewText") or "").strip()
+                text = (title + ". " + body).strip(". ").strip()
+                raw_rev[m.group(1)].append((ts, r.get("parent_asin") or r.get("asin"), text[:desc_max_chars]))
+    items = {it for ev in raw_rev.values() for _, it, _ in ev}
     item_cat = {}
-    for m in _iter_jsonl(meta_paths):
+    for line_obj in _iter_jsonl(meta_paths):
+        m = line_obj
+        it = m.get("parent_asin") or m.get("asin")
+        if it not in items:
+            continue
         cats = m.get("categories") or m.get("category") or []
         if cats and isinstance(cats[0], list):      # some releases nest the path
             cats = cats[0]
@@ -199,27 +239,10 @@ def build_amazon(review_paths, meta_paths, cat_level=2, K=24, min_events=5, max_
         if not cats:
             continue
         lvl = min(cat_level, len(cats) - 1)
-        leaf = cats[lvl]
-        parent = cats[lvl - 1] if lvl >= 1 else cats[0]
-        item_cat[m.get("parent_asin") or m.get("asin")] = (leaf, parent)
-    # 2) reviews grouped by user
-    by_user = defaultdict(list)
-    for r in _iter_jsonl(review_paths):
-        item = r.get("parent_asin") or r.get("asin")
-        if item not in item_cat:
-            continue
-        ts = r.get("timestamp") or r.get("unixReviewTime")
-        if ts is None:
-            continue
-        ts = float(ts)
-        if ts > 1e11:      # milliseconds
-            ts /= 1000.0
-        title = (r.get("title") or r.get("summary") or "").strip()
-        body = (r.get("text") or r.get("reviewText") or "").strip()
-        text = (title + ". " + body).strip(". ").strip()
-        by_user[r.get("user_id") or r.get("reviewerID")].append((ts, item, text[:desc_max_chars]))
-    users = [u for u, ev in by_user.items() if len(ev) >= min_events]
-    pyrng.shuffle(users)
+        item_cat[it] = (cats[lvl], cats[lvl - 1] if lvl >= 1 else cats[0])
+    by_user = {u: [e for e in ev if e[1] in item_cat] for u, ev in raw_rev.items()}
+    del raw_rev
+    users = [u for u in cand if u in by_user and len(by_user[u]) >= min_events]
     users = users[: int(max_users)] if max_users else users
     # 3) categories -> types (top K-1 + Other)
     cnt = Counter()

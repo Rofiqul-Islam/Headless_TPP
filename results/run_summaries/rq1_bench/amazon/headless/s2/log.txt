@@ -1,0 +1,30 @@
+05:17:42 INFO run <project>\runs\rq1_bench\amazon\headless\s2 | tags {'experiment': 'rq1_bench', 'variant': 'headless', 'dataset': 'amazon', 'model': 'Qwen2.5-1.5B', 'method': 'headless', 'condition': 'no_text', 'budget': 'event', 'seed': 2, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+05:17:45 INFO data <project>\data/amazon | condition=no_text budget=event | K=16 | scored events {'train': 281923, 'val': 40073, 'test': 82197}
+05:17:45 INFO time code: kind=hier branching=[8, 8, 8] a_max=0.7985 beta=1391 resolution=7.27e-07 | new tokens=44
+05:17:45 INFO train windows=6454 tokens/window mean=244 max=491
+05:17:49 INFO training: 806 optimizer steps in stages [('grammar', 200), ('next_event', 404), ('silence', 202)], 202 train batches per epoch, trainable params 18.60M
+05:17:49 INFO stage grammar: 200 steps, losses ['time', 'type'], train new_tokens
+05:18:35 INFO step 50/806 [grammar] loss 6.1119 lr 2.00e-04 47s
+05:19:18 INFO step 100/806 [grammar] loss 5.4036 lr 1.96e-04 89s
+05:19:55 INFO step 150/806 [grammar] loss 6.4263 lr 1.89e-04 126s
+05:20:30 INFO step 200/806 [grammar] loss 5.8312 lr 1.78e-04 161s
+05:20:30 INFO stage next_event: 404 steps, losses ['time', 'type'], train all
+05:21:12 INFO step 250/806 [next_event] loss 8.3347 lr 1.65e-04 203s
+05:21:55 INFO step 300/806 [next_event] loss 8.1660 lr 1.50e-04 246s
+05:22:49 INFO step 350/806 [next_event] loss 8.0945 lr 1.33e-04 300s
+05:23:28 INFO step 400/806 [next_event] loss 8.0594 lr 1.15e-04 340s
+05:24:13 INFO step 450/806 [next_event] loss 8.0779 lr 9.74e-05 385s
+05:24:58 INFO step 500/806 [next_event] loss 8.0758 lr 7.99e-05 429s
+05:25:12 INFO   val nll -0.7710 (time -2.6530 type 1.8820 sil 0.0000) select -0.7710 *
+05:26:05 INFO step 550/806 [next_event] loss 8.0498 lr 6.35e-05 496s
+05:26:51 INFO step 600/806 [next_event] loss 8.0417 lr 4.91e-05 542s
+05:27:08 INFO   val nll -0.7742 (time -2.6527 type 1.8785 sil 0.0000) select -0.7742 *
+05:27:08 INFO stage silence: 202 steps, losses ['sil', 'time', 'type'], train all
+05:27:49 INFO step 650/806 [silence] loss 8.0349 lr 3.71e-05 600s
+05:28:33 INFO step 700/806 [silence] loss 8.0504 lr 2.80e-05 644s
+05:29:31 INFO step 750/806 [silence] loss 8.0341 lr 2.23e-05 702s
+05:30:17 INFO step 800/806 [silence] loss 8.0240 lr 2.00e-05 748s
+05:30:35 INFO   val nll -0.7788 (time -2.6564 type 1.8776 sil 0.0000) select -0.7788 *
+05:30:35 INFO loaded best checkpoint (val -0.7788) after 766s
+05:30:49 INFO calibration temperatures {'time': [1.0084630250930786, 1.2433874607086182, 19.1307373046875], 'mark': 1.0123809576034546, 'val_nll_before': -0.7787609100341797, 'val_nll_after': -0.779998779296875}
+05:31:22 INFO test (calibrated): n_events=82197 n_gaps=0 nll_time=-2.6317 nll_type=1.8541 nll_sil=0.0000 nll=-0.7776 type_acc=0.4083 type_macro_f1=0.2011 pit_ks=0.0120 pit_ece=0.0023 time_tokens_per_event=2.9791 n_pred=3000 rmse_mean=0.3290 mae_median=0.2402 mae_log=0.1761 pred_cap=0.8000

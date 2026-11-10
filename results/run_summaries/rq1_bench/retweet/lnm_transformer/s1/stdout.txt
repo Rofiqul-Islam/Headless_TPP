@@ -1,0 +1,9 @@
+13:42:06 INFO run <project>\runs\rq1_bench\retweet\lnm_transformer\s1 | tags {'experiment': 'rq1_bench', 'variant': 'lnm_transformer', 'dataset': 'retweet', 'model': 'baseline-transformer', 'method': 'baseline', 'condition': 'no_text', 'budget': 'event', 'seed': 1, 'gen': False, 'lambda_d': 0.0, 'train_frac': 1.0, 'mark_init': 'mean', 'timecode': 'hier8x8x8', 'silence': True}
+<project>\htpp\baselines.py:32: UserWarning: enable_nested_tensor is True, but self.use_nested_tensor is False because encoder_layer.norm_first was True
+  self.enc = nn.TransformerEncoder(layer, layers)
+13:42:12 INFO baseline epoch 0 val nll 5.9932 best 5.9932
+13:42:27 INFO baseline epoch 5 val nll 5.8829 best 5.8645
+13:42:42 INFO baseline epoch 10 val nll 5.7570 best 5.7524
+13:42:57 INFO baseline epoch 15 val nll 5.7691 best 5.7281
+13:43:11 INFO baseline epoch 20 val nll 5.7637 best 5.7281
+13:44:00 INFO test {'n_events': 216465, 'n_gaps': 0, 'nll_time': 4.9046904522518, 'nll_type': 0.7721303070465154, 'nll_sil': 0.0, 'nll': 5.676820759298315, 'type_acc': 0.609225509897674, 'type_macro_f1': 0.4263363967313769, 'pit_ks': 0.010831346803826913, 'pit_ece': 0.0030365186057792217, 'rmse_mean': 14704.497292351582, 'mae_median': 2270.488422910174, 'mae_log': 1.0467033038292815, 'pred_cap': 582928.0, 'params': 102107, 'train_seconds': 107.99509048461914}
