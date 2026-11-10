@@ -1,0 +1,8 @@
+# RQ1: Headless-TPP with a fine-tuned LLM on synthetic Hawkes data (known likelihood)
+# and on the EasyTPP benchmarks. The dataset is set per job by scripts/experiments.py.
+inherit: base.yaml
+experiment: rq1
+data:
+  dir: data/hawkes
+  condition: no_text
+  max_events: 128

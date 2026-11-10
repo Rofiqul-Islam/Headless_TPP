@@ -1,0 +1,15 @@
+# RQ3: the value of event text on Amazon reviews (six inputs, two budgets, NAMED-OUT,
+# and the description-writing extension FULL+GEN).
+inherit: base.yaml
+experiment: rq3
+data:
+  dir: data/amazon_phones
+  condition: full
+  max_events: 32            # event budget: every input sees the same 32-event windows
+  max_tokens: 1024          # token budget: every input gets the same number of tokens
+  desc_max_tokens: 48
+  prompt: "The following is a customer's sequence of product reviews. Each event gives the waiting time since the previous review, the product category and optional review text.\n"
+train:
+  max_tokens_per_batch: 24576
+  max_batch_size: 16
+  eval_every: 1000

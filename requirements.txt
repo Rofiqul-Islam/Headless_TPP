@@ -1,0 +1,15 @@
+# Tested with: Python 3.13, torch 2.7.1, transformers 4.57.1, peft 0.17.1.
+# Install the torch build that matches your CUDA version first (https://pytorch.org).
+torch>=2.3
+transformers>=4.45,<4.60
+peft>=0.13,<0.18
+accelerate>=0.30
+datasets>=2.18
+huggingface_hub>=0.23
+numpy>=1.26
+pandas>=2.0
+scipy>=1.11
+matplotlib>=3.8
+pyyaml>=6.0
+tqdm>=4.66
+pytest>=8.0

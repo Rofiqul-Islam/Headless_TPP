@@ -1,0 +1,31 @@
+# CPU smoke test with a tiny random model (created by tests/make_tiny_model.py).
+inherit: base.yaml
+experiment: smoke
+model:
+  name: tests/tiny_model
+  dtype: float32
+  gradient_checkpointing: false
+  lora: {r: 4, alpha: 8, dropout: 0.0}
+timecode:
+  branching: [4, 4, 2]
+data:
+  max_events: 16
+  max_tokens: 400
+  desc_max_tokens: 12
+train:
+  max_tokens_per_batch: 4096
+  eval_tokens_per_batch: 8192
+  max_batch_size: 8
+  workers: 0
+  log_every: 5
+  eval_every: 20
+  synthetic_sequences: 20
+  stages:
+    - {name: grammar, steps: 5, losses: [time, type], train: new_tokens, synthetic_frac: 0.5}
+    - {name: next_event, steps: 15, losses: [time, type, desc]}
+    - {name: silence, steps: 10, losses: [time, type, desc, sil]}
+eval:
+  predict_max_events: 40
+  gen_max_events: 5
+baseline:
+  epochs: 3
