@@ -1,8 +1,3 @@
-"""Neural TPP baselines with an exact likelihood: a history encoder (GRU as in
-RMTPP/IFTPP, or a causal Transformer as in THP/SAHP) and a log-normal mixture for the
-waiting time (Shchur et al., 2020) plus a categorical distribution for the type.
-They score exactly the same events and quiet gaps as Headless-TPP, in the same time
-unit, so the NLLs are directly comparable."""
 from __future__ import annotations
 
 import math
