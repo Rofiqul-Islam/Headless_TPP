@@ -1,16 +1,3 @@
-"""Event-sequence data: storage format, loaders, censoring, and synthetic sequences.
-
-On disk a prepared dataset is a folder with
-    meta.json                 K, type names, scrambled names, parents, time unit, resolution
-    train.jsonl / val.jsonl / test.jsonl
-one sequence per line:
-    {"id": str, "t": [abs. times], "k": [types], "text": [str] | null, "shuf": [str] | null,
-     "t_end": float | null, "true_nll": float | null}
-`t_end` is the end of the observation window (the final quiet gap is t_end - t[-1]);
-`shuf` holds, for each event, the review of another, earlier event of the same type
-(SHUFFLED input); `true_nll` is the true negative log-likelihood of the scored part of
-the sequence when it is known (synthetic data).
-"""
 from __future__ import annotations
 
 from dataclasses import dataclass, field
