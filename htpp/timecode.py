@@ -1,21 +1,3 @@
-"""Hierarchical time code (Section 3 of the paper).
-
-A waiting time tau >= 0 is written as a path of time tokens (c_1, ..., c_L):
-level 1 chooses one of b_1 coarse bins or the tail [a_max, inf); each later level
-chooses one of b_l children of the bin above. The leaves ("fine bins") partition
-[0, a_max). Probability inside a fine bin is spread evenly (u_B = 1/w); in the tail
-it decays exponentially with a fixed rate beta. With these rules the LLM's
-probabilities over the time tokens define an exact density and survival function:
-
-    log f(tau) = sum_l log q_l(c_l) + log u_B(tau)
-    S(tau)     = sum_l (prod_{j<l} q_j) Q_l + (prod_l q_l) r_B(tau)
-
-where q_l is the probability of the token on tau's path at level l, Q_l the total
-probability of the later tokens at that level, and r_B(tau) the share of tau's bin
-that lies after tau. `kind="digits"` gives the LLMTime-style ablation: fixed-point
-decimal digits (branching 10 at every level, equal-width bins) written with the base
-tokenizer's digit tokens.
-"""
 from __future__ import annotations
 
 import math
