@@ -1,8 +1,3 @@
-"""Headless-TPP model: a causal LLM (LoRA-adapted) whose own output layer scores the
-time tokens, the type tokens and (optionally) the description words. There is no
-separate time head: new tokens get an input row and an output row, exactly like
-ordinary words, and every probability is a softmax over the tokens that the event
-grammar allows at that position (rule R2)."""
 from __future__ import annotations
 
 import math
