@@ -1,4 +1,3 @@
-"""Configuration, seeding, logging and small I/O helpers."""
 from __future__ import annotations
 
 import copy
