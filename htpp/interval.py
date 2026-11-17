@@ -1,16 +1,3 @@
-"""Likelihood of the recorded interval: a fair score when timestamps are rounded.
-
-When logs store rounded times (whole seconds, say), the recorded waiting time is only
-known up to the rounding step delta, and a continuous density evaluated at the rounded
-value rewards a model for putting sharp peaks on the recorded values. Every model is
-therefore also scored by the probability it gives to the interval of waiting times that
-is consistent with the record,
-
-    cell(tau) = [tau, tau + delta),
-
-reported as -log(P(cell) / width(cell)) so that it stays in nats per event and equals
-the density NLL for a smooth density. All models are scored on the same cells.
-"""
 from __future__ import annotations
 
 import math
