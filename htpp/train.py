@@ -1,5 +1,3 @@
-"""Training: the four stages of Section 3 (event grammar, next event, silence, and
-calibration, which is done after training in evaluate.py)."""
 from __future__ import annotations
 
 import math
