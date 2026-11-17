@@ -1,5 +1,3 @@
-"""Multivariate Hawkes processes with exponential kernels (synthetic data with a
-known likelihood):  lambda_k(t) = mu_k + sum_{t_j < t} alpha[k, k_j] beta exp(-beta (t - t_j))."""
 from __future__ import annotations
 
 import numpy as np
