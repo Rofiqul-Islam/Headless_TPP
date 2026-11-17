@@ -1,26 +1,3 @@
-"""From event sequences to LLM token sequences.
-
-Each event is written as a block of tokens
-
-    [c_1 ... c_n] [mark] [name words]? [<desc> review words </desc>]? [</e>]
-
-The time tokens c_1..c_n are the event's path in the time code, the mark token is its
-type. Which optional parts appear depends on the input condition (RQ3, Section 4):
-
-    no_text    mark token only (type ID)
-    names      mark token + the type's name ("Electronics")
-    scrambled  mark token + a fixed meaningless string of similar length
-    full       mark token + the event's own review
-    shuffled   mark token + the review of another, earlier event of the same type
-    text_only  the event's own review; the mark token is present (it is a training
-               target) but hidden from all later positions by the attention mask
-
-Targets are identical in every condition: the time tokens and the mark token of every
-scored event, plus the final quiet gap. The model reads its probabilities at the
-position *before* each target token. A window is a run of consecutive events; the
-first `n_ctx` events are context only, so every event (except the very first event of a
-sequence, whose waiting time is unknown) is scored exactly once.
-"""
 from __future__ import annotations
 
 from dataclasses import dataclass
