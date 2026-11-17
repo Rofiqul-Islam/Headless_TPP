@@ -1,9 +1,3 @@
-"""Builders for the three data sources used in the paper:
-
-* synthetic multivariate Hawkes sequences with a known likelihood (RQ1),
-* the standard EasyTPP benchmarks (Retweet, StackOverflow, Taobao, Amazon, Taxi) (RQ1),
-* Amazon Reviews 2023 with review text, one sequence per user (RQ3).
-"""
 from __future__ import annotations
 
 import gzip
