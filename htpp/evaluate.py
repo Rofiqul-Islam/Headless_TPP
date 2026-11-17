@@ -1,6 +1,3 @@
-"""Evaluation: held-out likelihood split into time / type / silence parts, type
-accuracy and macro-F1, next-time error from the exact predictive distribution,
-calibration (PIT), and temperature calibration on validation data (stage 4)."""
 from __future__ import annotations
 
 import math
