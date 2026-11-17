@@ -1,6 +1,3 @@
-"""Writing the next event's description (Section 4.3, FULL+GEN): sampling with
-nucleus sampling given the history and the true time and type, ROUGE-L against the
-real review, and a memorisation check (long n-gram overlap with the training text)."""
 from __future__ import annotations
 
 import numpy as np
